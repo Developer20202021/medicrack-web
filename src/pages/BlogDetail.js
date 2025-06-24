@@ -19,7 +19,7 @@ function BlogDetail() {
             setLoading(true);
             setError(null);
             try {
-                const response = await fetch(`http://127.0.0.1:8080/api/posts/${id}`);
+                const response = await fetch(`https://flask-api-496984660515.asia-south1.run.appapi/posts/${id}`);
                 if (!response.ok) {
                     if (response.status === 404) {
                         throw new Error("পোস্ট খুঁজে পাওয়া যায়নি।");

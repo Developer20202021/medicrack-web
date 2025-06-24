@@ -40,7 +40,7 @@ function ContactPage() {
     try {
       // API এন্ডপয়েন্ট: আপনার ফ্লাস্ক অ্যাপের URL এখানে দিন
       // মনে রাখবেন, প্রোডাকশনে এই URL পরিবর্তন করতে হতে পারে
-      const response = await fetch('http://127.0.0.1:8080/api/contact', {
+      const response = await fetch('https://flask-api-496984660515.asia-south1.run.appapi/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
