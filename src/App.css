@@ -1,38 +1,102 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+/* frontend/src/App.css */
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #f0f2f5;
   }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  
+.app-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  min-height: 100vh;
 }
 
-.App-link {
-  color: #61dafb;
+/* app-main এর padding-top নিশ্চিত করুন, এটি হেডারের উচ্চতার সাথে সামঞ্জস্যপূর্ণ হতে হবে */
+.app-main {
+  flex-grow: 1;
+  padding: 20px;
+  padding-top: 80px; /* ফিক্সড হেডারের কারণে কন্টেন্ট যাতে হেডারের নিচে না যায় */
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+/* Custom scrollbar hiding for the slider sections */
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ এর জন্য স্ক্রলবার লুকায় */
+  scrollbar-width: none;  /* Firefox এর জন্য স্ক্রলবার লুকায় */
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;  /* Safari এবং Chrome এর জন্য স্ক্রলবার লুকায় */
+}
+
+/* Define CSS variables for card widths and gaps for better calculation in keyframes */
+:root {
+  --teacher-card-width: 320px; /* w-80 */
+  --teacher-gap-width: 48px; /* space-x-12 */
+  --testimonial-card-width: 384px; /* w-96 */
+  --testimonial-gap-width: 48px; /* space-x-12 */
+}
+
+/* Auto-scroll animation for teachers section */
+@keyframes scroll-teachers-css {
+  0% {
+    transform: translateX(0%);
   }
-  to {
-    transform: rotate(360deg);
+  100% {
+    /* Scrolls by the width of one set of content. This calculation ensures a seamless loop */
+    transform: translateX(calc(-1 * (var(--teacher-card-width) * 4 + var(--teacher-gap-width) * 3)));
   }
+}
+
+/* Auto-scroll animation for testimonials section */
+@keyframes scroll-testimonials-css {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    /* Scrolls by the width of one set of content. This calculation ensures a seamless loop */
+    transform: translateX(calc(-1 * (var(--testimonial-card-width) * 3 + var(--testimonial-gap-width) * 2)));
+  }
+}
+
+/* Apply animation to the teacher cards inner container */
+.animate-scroll-teachers-css {
+  animation: scroll-teachers-css 40s linear infinite; /* Increased duration for smoother scroll */
+  /* This width makes the total scrollable content double, for seamless looping */
+  width: calc((var(--teacher-card-width) + var(--teacher-gap-width)) * 4 * 2); /* 4 cards, 3 gaps, duplicated, plus last card's width */
+}
+
+/* Apply animation to the testimonial cards inner container */
+.animate-scroll-testimonials-css {
+  animation: scroll-testimonials-css 50s linear infinite; /* Increased duration for smoother scroll */
+  /* This width makes the total scrollable content double, for seamless looping */
+  width: calc((var(--testimonial-card-width) + var(--testimonial-gap-width)) * 3 * 2); /* 3 cards, 2 gaps, duplicated, plus last card's width */
+}
+
+/* Class to pause the animation on hover/interaction */
+.paused {
+  animation-play-state: paused;
+}
+
+
+/* এখানে আপনার কাস্টম সিএসএস যুক্ত করুন, যেমন .hide-scrollbar */
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }

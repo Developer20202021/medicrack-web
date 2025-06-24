@@ -1,0 +1,126 @@
+/* frontend/src/components/AuthForm.css */
+.auth-form-container {
+    max-width: 400px;
+    font-size: small;
+    margin: 50px auto;
+    padding: 30px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    text-align: center;
+  }
+  
+  .auth-form-container h2 {
+    margin-bottom: 15px;
+    color: #333;
+    font-size: 1.5em;
+  }
+  
+  .error-message {
+    color: #dc3545;
+    margin-bottom: 15px;
+    font-size: 0.95em;
+    font-weight: bold;
+  }
+  
+  .form-group {
+    margin-bottom: 10px;
+    text-align: left;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+    font-weight: bold;
+    font-size: 0.95em;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    box-sizing: border-box; /* Padding and border included in width */
+  }
+  
+  .login-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .login-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .or-divider {
+    margin: 25px 0;
+    color: #888;
+    position: relative;
+    font-size: 0.9em;
+  }
+  
+  .or-divider::before,
+  .or-divider::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background-color: #eee;
+  }
+  
+  .or-divider::before {
+    left: 0;
+  }
+  
+  .or-divider::after {
+    right: 0;
+  }
+  
+  .app-login-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .app-login-button:hover {
+    background-color: #218838;
+  }
+
+  /* frontend/src/components/AuthForm.css */
+
+/* (আগের CSS কোড এখানে থাকবে) */
+
+.toggle-mode {
+  margin-top: 20px;
+  font-size: 0.9em;
+  color: #666;
+}
+
+.toggle-mode span {
+  color: #007bff;
+  cursor: pointer;
+  font-weight: bold;
+  transition: color 0.2s ease;
+}
+
+.toggle-mode span:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}

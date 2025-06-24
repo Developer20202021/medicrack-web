@@ -1,0 +1,205 @@
+/* src/pages/ResultPage.css */
+.result-page-container {
+    padding: 20px;
+    font-family: "Tiro Bangla", serif;
+    max-width: 800px;
+    margin: 20px auto;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    text-align: center;
+
+
+        @media (max-width: 768px) {
+
+          font-size: small;
+          
+        }
+  }
+  
+  .loading-container, .error-container {
+    text-align: center;
+    padding: 50px;
+    font-size: 1.2em;
+    color: #555;
+  }
+  
+  .error-container p {
+    color: #dc3545;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  h1 {
+    color: #0056b3;
+    margin-bottom: 30px;
+    font-size: 1.5em;
+    font-family: "Tiro Bangla", serif;
+  }
+  
+  .result-summary {
+    background-color: #f0f8ff;
+    border: 1px solid #cceeff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+    text-align: left;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+  
+  .result-summary p {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .result-summary p strong {
+    color: #000;
+  }
+  
+  .result-summary .correct {
+    color: #28a745;
+    font-weight: bold;
+  }
+  
+  .result-summary .wrong {
+    color: #dc3545;
+    font-weight: bold;
+  }
+  
+  .result-summary .total-marks {
+    font-size: 1.5em;
+    color: #007bff;
+    font-weight: bold;
+  }
+  
+  .answer-review-section {
+    margin-top: 30px;
+  }
+  
+  .answer-review-section h2 {
+    color: #333;
+    margin-bottom: 25px;
+    font-size: 1.6em;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+  }
+  
+  .answer-card {
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+    text-align: left;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    position: relative;
+  }
+  
+  .answer-card.correct-answer-card {
+    border-left: 5px solid #28a745;
+  }
+  
+  .answer-card.wrong-answer-card {
+    border-left: 5px solid #dc3545;
+  }
+  
+  .question-text {
+    font-size: 1.1em;
+    color: #333;
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+  
+  .your-answer {
+    font-size: 1em;
+    color: #555;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .your-answer strong {
+    color: #000;
+  }
+  
+  .correct-answer {
+    font-size: 1em;
+    color: #28a745;
+    font-weight: bold;
+  }
+  
+  .icon {
+    font-size: 1.2em;
+  }
+  
+  .correct-icon {
+    color: #28a745;
+  }
+  
+  .wrong-icon {
+    color: #dc3545;
+  }
+  
+  .back-to-home-button {
+    display: inline-block;
+    padding: 12px 25px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1em;
+    cursor: pointer;
+    margin-top: 30px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+  
+  .back-to-home-button:hover {
+    background-color: #0056b3;
+  }
+
+
+  /* ResultPage.css */
+
+/* ... (আগের স্টাইলগুলো) ... */
+
+.medicrack-app-promo {
+  background-color: #e0f7fa; /* হালকা নীল ব্যাকগ্রাউন্ড */
+  border: 1px solid #00bcd4; /* সীমানা */
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.medicrack-app-promo p {
+  margin-bottom: 15px;
+  font-size: 1.1em;
+  color: #333;
+  line-height: 1.5;
+}
+
+.medicrack-app-promo p strong {
+  color: #00796b; /* গাঢ় সবুজ */
+}
+
+.download-app-button {
+  display: inline-block;
+  background-color: #4CAF50; /* সবুজ বাটন */
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1em;
+  cursor: pointer;
+  text-decoration: none; /* লিংক হিসেবে থাকলে আন্ডারলাইন সরাতে */
+  transition: background-color 0.3s ease;
+}
+
+.download-app-button:hover {
+  background-color: #45a049; /* হোভারে গাঢ় সবুজ */
+}

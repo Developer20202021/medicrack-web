@@ -1,0 +1,248 @@
+
+.home-page-container {
+    padding: 20px;
+    font-family: "Tiro Bangla", serif;
+    text-align: center;
+    font-size: small;
+}
+
+
+ 
+h1 {
+    color: #333;
+    margin-bottom: 30px;
+
+
+}
+ 
+.exam-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+ 
+.exam-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+ 
+.exam-card h2 {
+    color: #0056b3;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+ 
+.exam-card p {
+    margin-bottom: 5px;
+    color: #555;
+}
+ 
+.card-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+ 
+.start-exam-button,
+.view-result-button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    text-decoration: none; /* Link এর জন্য */
+    display: inline-block;
+    text-align: center;
+    flex-grow: 1; /* বাটনগুলোকে সমান প্রস্থ করার জন্য */
+}
+ 
+.start-exam-button {
+    background-color: #28a745;
+    color: white;
+}
+ 
+.start-exam-button:hover {
+    background-color: #218838;
+}
+ 
+.view-result-button {
+    background-color: #007bff;
+    color: white;
+}
+ 
+.view-result-button:hover {
+    background-color: #0056b3;
+}
+ 
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* নিশ্চিত করুন যে এটি অন্য সবকিছুর উপরে থাকে */
+}
+ 
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    width: 90%; /* মোবাইলের জন্য */
+    max-width: 400px; /* ডেস্কটপের জন্য */
+    position: relative;
+    font-size: 1rem; /* মোডাল কন্টেন্টের ফন্ট সাইজ */
+}
+ 
+.modal-content h3 {
+    margin-bottom: 20px;
+    color: #333;
+}
+ 
+.modal-content p {
+    margin-bottom: 20px;
+    color: #555;
+    line-height: 1.5;
+}
+ 
+.modal-content input {
+    width: calc(100% - 20px); /* প্যাডিং এর জন্য এডজাস্টমেন্ট */
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box; /* প্যাডিং উইডথের সাথে যুক্ত না হয় */
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px; /* বাটনগুলোর মধ্যে গ্যাপ */
+    margin-top: 20px;
+}
+ 
+.modal-content button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 0 5px; /* আগের কোডে margin: 0 10px; ছিল, এটি 0 5px; করলে বাটনগুলো আরও কাছাকাছি থাকবে */
+    transition: background-color 0.3s ease;
+}
+ 
+.modal-content button.primary {
+    background-color: #007bff;
+    color: white;
+}
+ 
+.modal-content button.primary:hover {
+    background-color: #0056b3;
+}
+ 
+.modal-content button.secondary {
+    background-color: #6c757d;
+    color: white;
+}
+ 
+.modal-content button.secondary:hover {
+    background-color: #5a6268;
+}
+
+
+.filter-section {
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.filter-section label {
+    font-size: 1.1em;
+    color: #555;
+    margin-right: 10px;
+}
+
+.filter-section select {
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    background-color: #fff;
+}
+
+.filter-section select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+
+
+/* Pagination Styles */
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.pagination-controls button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+.pagination-controls button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.pagination-controls button:hover:not(:disabled) {
+    background-color: #0056b3;
+}
+
+.pagination-controls span {
+    font-size: 1.1em;
+    color: #333;
+}
+
+
+/* HomePage.css */
+
+/* ... (অন্যান্য স্টাইল) ... */
+
+.warning-message {
+  background-color: #fff3cd; /* হালকা হলুদ ব্যাকগ্রাউন্ড */
+  color: #856404; /* গাঢ় হলুদ টেক্সট */
+  border: 1px solid #ffeeba; /* বর্ডার */
+  border-radius: 5px; /* হালকা গোলাকার কোণা */
+  padding: 10px 15px; /* প্যাডিং */
+  margin-bottom: 20px; /* নিচের দিকে মার্জিন */
+  font-size: 0.9rem; /* ফন্টের আকার */
+  text-align: center; /* টেক্সট মাঝখানে */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* হালকা শ্যাডো */
+}
+
+/* প্রয়োজনে অন্যান্য বিদ্যমান CSS এর সাথে সামঞ্জস্যপূর্ণ করুন */
