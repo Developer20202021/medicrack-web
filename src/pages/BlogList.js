@@ -24,7 +24,7 @@ function BlogList() {
         setLoading(true);
         setError(null);
         try {
-            const response = await fetch(`https://flask-api-496984660515.asia-south1.run.appapi/posts?page=${page}&per_page=${postsPerPage}`);
+            const response = await fetch(`https://flask-api-496984660515.asia-south1.run.app/api/posts?page=${page}&per_page=${postsPerPage}`);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }

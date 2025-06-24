@@ -1,5 +1,5 @@
 // frontend/src/api.js
-const API_BASE_URL = 'https://flask-api-496984660515.asia-south1.run.appapi'; // আপনার Flask API এর URL
+const API_BASE_URL = 'https://flask-api-496984660515.asia-south1.run.app/api'; // আপনার Flask API এর URL
 
 
 
