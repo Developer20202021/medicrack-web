@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { getExams, getExamResult, getUniqueSubjects } from '../api'; // api.js থেকে ইম্পোর্ট
 import { Link, useNavigate } from 'react-router-dom';
 import './HomePage.css'; // আপনার হোমপেজ স্টাইলের জন্য
+import { Helmet } from 'react-helmet';
 
 function HomePage() {
   const [exams, setExams] = useState([]);
@@ -108,7 +109,16 @@ function HomePage() {
 
   return (
     <div className="home-page-container">
-      <h1>পরীক্ষাগুলো</h1>
+
+      <Helmet>
+        <title>ফ্রি মেডিকেল এক্সাম | মেডিক্র্যাক</title>
+        <meta name="description" content="মেডিক্র্যাক-এ বিনামূল্যে মেডিকেল পরীক্ষা দিন। আপনার জ্ঞান যাচাই করুন এবং প্রস্তুতির স্তর সম্পর্কে জানুন। সকল মেডিকেল শিক্ষার্থীদের জন্য উন্মুক্ত।" />
+        <meta name="keywords" content="ফ্রি এক্সাম, মেডিকেল পরীক্ষা, অনলাইন এক্সাম, মেডিক্র্যাক এক্সাম, মেডিকেল স্টুডেন্ট এক্সাম" />
+        <link rel="canonical" href="https://www.yourmedicrackwebsite.com/free-exams" />
+      </Helmet>
+
+
+      <h1>মেডিক্র্যাক পরীক্ষাগুলো</h1>
 
       {/* Warning Message */}
       <div className="warning-message">

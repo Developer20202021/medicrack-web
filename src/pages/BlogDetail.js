@@ -59,10 +59,10 @@ function BlogDetail() {
                 setHeadersForSidebar(tempHeadersForSidebar);
                 setHeaderIdMap(tempHeaderIdMap);
 
-                console.log('Post data received in BlogDetail:', data);
-                console.log('Content blocks received:', data.content?.blocks);
-                console.log('Generated Headers for Sidebar:', tempHeadersForSidebar);
-                console.log('Generated Header ID Map:', tempHeaderIdMap);
+                // console.log('Post data received in BlogDetail:', data);
+                // console.log('Content blocks received:', data.content?.blocks);
+                // console.log('Generated Headers for Sidebar:', tempHeadersForSidebar);
+                // console.log('Generated Header ID Map:', tempHeaderIdMap);
                 setLoading(false);
             } catch (err) {
                 console.error("Error fetching post:", err);

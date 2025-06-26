@@ -1,6 +1,7 @@
 // src/pages/ExamPage.js
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import { getExamMcqs, submitExamResult } from '../api';
 import './ExamPage.css';
 import katex from 'katex'; // KaTeX ইম্পোর্ট করুন
@@ -176,6 +177,14 @@ function ExamPage() {
 
   return (
     <div className="exam-page-container">
+
+    <Helmet>
+        <title>ফ্রি মেডিকেল এক্সাম | মেডিক্র্যাক</title>
+        <meta name="description" content="মেডিক্র্যাক-এ বিনামূল্যে মেডিকেল পরীক্ষা দিন। আপনার জ্ঞান যাচাই করুন এবং প্রস্তুতির স্তর সম্পর্কে জানুন। সকল মেডিকেল শিক্ষার্থীদের জন্য উন্মুক্ত।" />
+        <meta name="keywords" content="ফ্রি এক্সাম, মেডিকেল পরীক্ষা, অনলাইন এক্সাম, মেডিক্র্যাক এক্সাম, মেডিকেল স্টুডেন্ট এক্সাম" />
+        <link rel="canonical" href="https://www.yourmedicrackwebsite.com/free-exams" />
+      </Helmet>
+
       <div className="exam-header">
         <h2>{exam.SubjectName} - {exam.topicName}</h2>
         <div className="timer">সময় বাকি: {formatTime(timeRemaining)}</div>

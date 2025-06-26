@@ -66,7 +66,8 @@ function App() {
               element={<BlogList />} // ল্যান্ডিং পেজ '/home' রুটে দেখা যাবে
             />
 
-             <Route path="/post/:id" element={<BlogDetail />} />
+             <Route path="/post/:id/:titleSlug" element={<BlogDetail />} />
+             
             <Route
               path="/faq"
               element={<FAQPage />} // ল্যান্ডিং পেজ '/home' রুটে দেখা যাবে

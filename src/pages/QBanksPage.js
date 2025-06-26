@@ -4,6 +4,7 @@ import { getQBanks } from '../api';
 import QBanksSubjectsModal from '../components/QBanksSubjectsModal';
 import DescriptionModal from '../components/DescriptionModal'; // নতুন ডেসক্রিপশন মডাল কম্পোনেন্ট
 import { X } from 'lucide-react'; // X icon for close button
+import { Helmet } from 'react-helmet';
 
 const QBanksPage = () => {
   const [qbanks, setQBanks] = useState([]);
@@ -84,15 +85,24 @@ const QBanksPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 font-['Inter'] py-12 px-4">
+
+     <Helmet>
+        <title>মেডিকেল প্রশ্নব্যাঙ্ক (QBank) | মেডিক্র্যাক</title>
+        <meta name="description" content="মেডিক্র্যাকের বিশাল মেডিকেল প্রশ্নব্যাঙ্ক থেকে বিনামূল্যে প্রশ্ন পড়ুন। আপনার মেডিকেল জ্ঞানকে আরও শক্তিশালী করুন।" />
+        <meta name="keywords" content="কিউব্যাঙ্ক, প্রশ্নব্যাঙ্ক, মেডিকেল প্রশ্ন, ফ্রি কিউব্যাঙ্ক, মেডিক্র্যাক কিউব্যাঙ্ক, মেডিকেল স্টাডি মেটেরিয়াল" />
+        <link rel="canonical" href="https://www.yourmedicrackwebsite.com/qbank" />
+
+      </Helmet>
+
       <div className="max-w-7xl mx-auto">
         <h1 className="text-2xl font-extrabold text-gray-900 text-center mb-10 border-b-4 border-emerald-500 pb-4 inline-block">
-          আমাদের প্রশ্নব্যাংকসমূহ
+          মেডিক্র্যাক প্রশ্নব্যাংকসমূহ
         </h1>
 
         {loading ? (
-          <p className="text-center text-lg text-gray-600">প্রশ্নব্যাংক লোড হচ্ছে...</p>
+          <p className="text-center text-lg text-gray-600">মেডিক্র্যাক প্রশ্নব্যাংক লোড হচ্ছে...</p>
         ) : error ? (
-          <p className="text-center text-lg text-red-500">প্রশ্নব্যাংক আনতে সমস্যা: {error}</p>
+          <p className="text-center text-lg text-red-500">মেডিক্র্যাক প্রশ্নব্যাংক আনতে সমস্যা: {error}</p>
         ) : qbanks.length > 0 ? (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

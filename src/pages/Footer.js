@@ -9,7 +9,7 @@ const Footer = () => {
         <div className="mb-6 md:mb-0">
           <h3 className="text-xl font-semibold mb-4">মেডিক্র্যাক</h3>
           <p className="text-gray-400 text-sm">
-            বাংলাদেশের সকল ছাত্রছাত্রীর জন্য সাশ্রয়ী মূল্যে মানসম্মত মেডিকেল ভর্তি প্রস্তুতি প্রদান।
+            বাংলাদেশের সকল ছাত্রছাত্রীর জন্য সাশ্রয়ী মূল্যে মানসম্মত মেডিকেল ভর্তি প্রস্তুতি প্রদান।
           </p>
         </div>
 
@@ -17,10 +17,11 @@ const Footer = () => {
         <div className="mb-6 md:mb-0">
           <h3 className="text-xl font-semibold mb-4">গুরুত্বপূর্ণ লিঙ্ক</h3>
           <ul className="text-gray-400 space-y-2">
-            <li><a href="#" className="hover:text-emerald-500 transition duration-300">হোম</a></li>
-            <li><a href="#" className="hover:text-emerald-500 transition duration-300">আমাদের সম্পর্কে</a></li>
-            <li><a href="#" className="hover:text-emerald-500 transition duration-300">কোর্সসমূহ</a></li>
-            <li><a href="#" className="hover:text-emerald-500 transition duration-300">যোগাযোগ</a></li>
+            {/* এখানে সঠিক URL দিন অথবা যদি লিঙ্ক না হয়, তবে <button> ব্যবহার করুন */}
+            <li><a href="/home" className="hover:text-emerald-500 transition duration-300">হোম</a></li>
+            <li><a href="/about-us" className="hover:text-emerald-500 transition duration-300">আমাদের সম্পর্কে</a></li>
+            <li><a href="/exams" className="hover:text-emerald-500 transition duration-300">এক্সামসমূহ</a></li>
+            <li><a href="/contact" className="hover:text-emerald-500 transition duration-300">যোগাযোগ</a></li>
           </ul>
         </div>
 
@@ -38,13 +39,14 @@ const Footer = () => {
 
           <h3 className="text-xl font-semibold mb-4 mt-6">আমাদের সাথে যুক্ত থাকুন</h3>
           <div className="flex space-x-4">
-            <a href="#" className="text-gray-400 hover:text-emerald-500 transition duration-300" aria-label="Facebook">
+            <a href="https://www.facebook.com/profile.php?id=61569906780171" target='_blank' rel="noopener noreferrer" className="text-gray-400 hover:text-emerald-500 transition duration-300" aria-label="Facebook">
               <Facebook size={24} />
             </a>
-            <a href="#" className="text-gray-400 hover:text-emerald-500 transition duration-300" aria-label="Instagram">
+            {/* এখানেও সঠিক Instagram এবং YouTube URL দিন, অথবা যদি লিঙ্ক না হয়, তবে <button> ব্যবহার করুন */}
+            <a href="https://www.facebook.com/profile.php?id=61569906780171" target='_blank' rel="noopener noreferrer" className="text-gray-400 hover:text-emerald-500 transition duration-300" aria-label="Instagram">
               <Instagram size={24} />
             </a>
-            <a href="#" className="text-gray-400 hover:text-emerald-500 transition duration-300" aria-label="YouTube">
+            <a href="https://www.youtube.com/@MediCrackOnline" target='_blank' rel="noopener noreferrer" className="text-gray-400 hover:text-emerald-500 transition duration-300" aria-label="YouTube">
               <Youtube size={24} />
             </a>
             {/* Add more social media icons as needed */}

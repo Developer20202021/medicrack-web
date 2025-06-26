@@ -45,8 +45,8 @@ function BlogList() {
         navigate(`?page=${currentPage}`, { replace: true });
     }, [currentPage, fetchPosts, navigate]);
 
-    const handleViewPost = (id) => {
-        navigate(`/post/${id}`); // পোস্ট দেখার জন্য BlogDetail পেজে নেভিগেট করুন
+    const handleViewPost = (id, title) => {
+        navigate(`/post/${id}/${title}`); // পোস্ট দেখার জন্য BlogDetail পেজে নেভিগেট করুন
     };
 
     const handlePageChange = (pageNumber) => {
@@ -118,7 +118,7 @@ function BlogList() {
                                 <button
                                     onClick={(e) => {
                                         e.stopPropagation(); // Prevent the card's onClick from firing when the button is clicked
-                                        handleViewPost(post.id);
+                                        handleViewPost(post.id, post.title);
                                     }}
                                     style={{
                                         display: 'block', // Changed to block to take full width

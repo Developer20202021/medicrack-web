@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { BookText, GraduationCap, DollarSign, Lightbulb, Trophy, ChevronLeft, ChevronRight, X } from 'lucide-react'; // X icon for close button
 import { getTeachers, getCourses } from '../api';
+import { Helmet } from 'react-helmet';
 
 const LandingPage = () => {
   // স্ক্রলযোগ্য কন্টেইনারগুলির জন্য রেফ
@@ -86,6 +87,21 @@ const LandingPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 font-['Inter']">
+
+            <Helmet>
+        <title>মেডিক্র্যাক | মেডিকেল শিক্ষার্থীদের জন্য ফ্রি এক্সাম ও কিউব্যাঙ্ক</title>
+        <meta name="description" content="মেডিক্র্যাক: মেডিকেল শিক্ষার্থীদের জন্য বিনামূল্যে অনলাইন পরীক্ষা, প্রশ্নব্যাঙ্ক এবং অ্যাপের মাধ্যমে কোর্সের সুবিধা। আপনার মেডিকেল প্রস্তুতিকে আরও সহজ করুন।" />
+        <meta name="keywords" content="মেডিক্র্যাক, মেডিকেল এক্সাম, ফ্রি এক্সাম, কিউব্যাঙ্ক, প্রশ্নব্যাঙ্ক, মেডিকেল অ্যাপ, অনলাইন কোর্স, এমবিবিএস, বিডিএস, মেডিকেল প্রস্তুতি" />
+        <link rel="canonical" href="https://www.yourmedicrackwebsite.com/" />
+
+        {/* Open Graph Tags for Social Media Sharing */}
+        <meta property="og:title" content="মেডিক্র্যাক | মেডিকেল শিক্ষার্থীদের জন্য ফ্রি এক্সাম ও কিউব্যাঙ্ক" />
+        <meta property="og:description" content="মেডিক্র্যাক: মেডিকেল শিক্ষার্থীদের জন্য বিনামূল্যে অনলাইন পরীক্ষা, প্রশ্নব্যাঙ্ক এবং অ্যাপের মাধ্যমে কোর্সের সুবিধা। আপনার মেডিকেল প্রস্তুতিকে আরও সহজ করুন।" />
+        <meta property="og:image" content="https://www.yourmedicrackwebsite.com/images/medikrack-logo.png" /> {/* আপনার লোগো বা একটি আকর্ষণীয় ছবি */}
+        <meta property="og:url" content="https://www.yourmedicrackwebsite.com/" />
+        <meta property="og:type" content="website" />
+      </Helmet>
+
       {/* হিরো সেকশন */}
       <section className="relative h-[600px] flex items-center justify-center text-center text-white bg-cover bg-center rounded-b-2xl shadow-lg mx-4 md:mx-auto md:max-w-7xl"
         style={{
