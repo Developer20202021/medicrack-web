@@ -114,7 +114,7 @@ function HomePage() {
         <title>ফ্রি মেডিকেল এক্সাম | মেডিক্র্যাক</title>
         <meta name="description" content="মেডিক্র্যাক-এ বিনামূল্যে মেডিকেল পরীক্ষা দিন। আপনার জ্ঞান যাচাই করুন এবং প্রস্তুতির স্তর সম্পর্কে জানুন। সকল মেডিকেল শিক্ষার্থীদের জন্য উন্মুক্ত।" />
         <meta name="keywords" content="ফ্রি এক্সাম, মেডিকেল পরীক্ষা, অনলাইন এক্সাম, মেডিক্র্যাক এক্সাম, মেডিকেল স্টুডেন্ট এক্সাম" />
-        <link rel="canonical" href="https://www.yourmedicrackwebsite.com/free-exams" />
+        <link rel="canonical" href="https://www.medicrack.online/exams" />
       </Helmet>
 
 
