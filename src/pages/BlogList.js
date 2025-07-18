@@ -45,8 +45,20 @@ function BlogList() {
         navigate(`?page=${currentPage}`, { replace: true });
     }, [currentPage, fetchPosts, navigate]);
 
+
+function customSlugify(text) {
+  return text
+    .toLowerCase()
+    .replace(/\s+/g, '-')         // space to -
+    .replace(/[^\u0980-\u09FF\w\-]+/g, '') // বাংলা + eng অক্ষর বাদে সব মুছে ফেলো
+    .replace(/\-\-+/g, '-')       // multiple dash to single
+    .replace(/^-+/, '')           // trim starting -
+    .replace(/-+$/, '');          // trim ending -
+}
+
     const handleViewPost = (id, title) => {
-        navigate(`/post/${id}/${title}`); // পোস্ট দেখার জন্য BlogDetail পেজে নেভিগেট করুন
+        const titleSlug = customSlugify(title);
+        navigate(`/post/${id}/${titleSlug}`); // পোস্ট দেখার জন্য BlogDetail পেজে নেভিগেট করুন
     };
 
     const handlePageChange = (pageNumber) => {
