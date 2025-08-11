@@ -38,6 +38,7 @@ const Header = ({ isAuthenticated, onLogout }) => {
           <Link to="/qbanks" className="text-white hover:text-emerald-400 transition duration-300">QBank</Link>
           <Link to="/privacy-policy" className="text-white hover:text-emerald-400 transition duration-300">Privacy Policy</Link>
           <Link to="/blog" className="text-white hover:text-emerald-400 transition duration-300">Blog</Link>
+          <Link to="/medicrack/admission-form" className="text-white hover:text-emerald-400 transition duration-300">Admission</Link>
           {/* আপনার যদি অন্য কোন পেজ থাকে, এখানে Link যুক্ত করতে পারেন */}
         </nav>
 
@@ -82,6 +83,7 @@ const Header = ({ isAuthenticated, onLogout }) => {
             <li> <Link to="/qbanks" className="text-white hover:text-emerald-400 transition duration-300" onClick={toggleMobileMenu}>QBank</Link></li>
             <li> <Link to="/privacy-policy" className="text-white hover:text-emerald-400 transition duration-300" onClick={toggleMobileMenu}>Privacy Policy</Link></li>
             <li> <Link to="/blog" className="text-white hover:text-emerald-400 transition duration-300" onClick={toggleMobileMenu}>Blog</Link></li>
+             <Link to="/medicrack/admission-form" className="text-white hover:text-emerald-400 transition duration-300" onClick={toggleMobileMenu}>Admission</Link>
             {/* আপনার অন্যান্য মোবাইল নেভিগেশন লিঙ্ক এখানে যোগ করুন */}
           </ul>
         </nav>

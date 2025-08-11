@@ -1,6 +1,6 @@
 // frontend/src/App.js
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate,useLocation} from 'react-router-dom';
 // নিশ্চিত করুন যে এই ফাইলগুলি src/pages/ ডিরেক্টরিতে বিদ্যমান:
 import HomePage from './pages/HomePage';
 import ExamPage from './pages/ExamPage';
@@ -11,16 +11,83 @@ import ContactPage from "./pages/ContactPage";
 import BlogList from "./pages/BlogList";
 import BlogDetail from "./pages/BlogDetail";
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import AdmissionForm from './pages/AdmissionForm';
 import FAQPage from "./pages/FAQPage";
 // নিশ্চিত করুন যে এই ফাইলগুলি src/components/ ডিরেক্টরিতে বিদ্যমান:
 import AuthForm from './components/AuthForm';
 import Header from './components/Header';
 import QBanksPage from './pages/QBanksPage'; // নতুন QBanksPage
-
+import ReactPixel from 'react-facebook-pixel';
+// Google analytics
+import ReactGA from "react-ga4";
 import './App.css';
 import AboutUsPage from './pages/AboutUsPage';
 // KaTeX CSS এখন public/index.html থেকে লোড করা হবে, তাই এখানে আর ইম্পোর্ট করার প্রয়োজন নেই।
 // import 'katex/dist/katex.min.css';
+
+
+// --- Facebook Pixel ID সেট করুন ---
+const FACEBOOK_PIXEL_ID = '532165314321'; // <-- এখানে আপনার আসল Facebook Pixel ID দিন
+// ----------------------------------
+
+// আপনার GA4 Measurement ID দিন
+const GA_MEASUREMENT_ID = "G-asdfadsf";
+ReactGA.initialize(GA_MEASUREMENT_ID);
+
+
+  function getFbClickId() {
+    const match = document.cookie.match(/_fbc=([^;]*)/);
+    return match ? match[1] : null;
+}
+
+function getFbBrowserId() {
+    const match = document.cookie.match(/_fbp=([^;]*)/);
+    return match ? match[1] : null;
+}
+
+const externalId = localStorage.getItem('client_id');
+
+if (typeof window !== 'undefined' && !window.fbq) {
+
+  
+    const fbc = getFbClickId();
+    const fbp = getFbBrowserId();
+
+  const advancedMatching = {
+    external_id: externalId,
+    fbc,
+    fbp,
+  };
+
+
+  if (process.env.NODE_ENV === 'production') {
+    ReactPixel.init(FACEBOOK_PIXEL_ID, advancedMatching, { autoConfig: true, debug: false });
+  } else {
+    ReactPixel.init(FACEBOOK_PIXEL_ID, advancedMatching, { autoConfig: true, debug: true });
+    console.log("Facebook Pixel initialized in DEV mode.");
+  }
+}
+
+
+
+// --- সংশোধিত কাস্টম হুক: প্রতিটি রাউট চেঞ্জে PageView ট্র্যাক করার জন্য ---
+function useFacebookPixelPageView() {
+  const location = useLocation();
+  const lastPathname = useRef(''); // শেষ ট্র্যাক করা pathname সংরক্ষণ করতে
+
+  useEffect(() => {
+    // শুধুমাত্র যদি pathname পরিবর্তিত হয় এবং fbq লোড হয়ে থাকে তাহলে ট্র্যাক করুন
+    if (window.fbq && location.pathname !== lastPathname.current) {
+      ReactPixel.pageView();
+      lastPathname.current = location.pathname; // নতুন pathname সংরক্ষণ করুন
+      console.log(`Facebook Pixel: PageView Tracked for: ${location.pathname}`);
+    } else if (!window.fbq) {
+      console.warn('Facebook Pixel (fbq) not loaded');
+    }
+  }, [location.pathname]); // শুধুমাত্র location.pathname এর উপর নির্ভর করুন
+}
+// ------------------------------------------------------------------
+
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -45,8 +112,10 @@ function App() {
     setIsAuthenticated(false);
   };
 
+  useFacebookPixelPageView();
+
   return (
-    <Router>
+    // <Router>
       <div className="app-container">
         {/* Header কম্পোনেন্ট ব্যবহার করা হয়েছে */}
         <Header isAuthenticated={isAuthenticated} onLogout={handleLogout} />
@@ -100,6 +169,8 @@ function App() {
 
              <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
 
+             <Route path="/medicrack/admission-form" element={<AdmissionForm />} />
+
             {/* কোনো ম্যাচ না হলে '/' রুটে রিডাইরেক্ট করবে */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
@@ -108,7 +179,7 @@ function App() {
         {/* Footer কম্পোনেন্ট */}
         <Footer />
       </div>
-    </Router>
+    // </Router>
   );
 }
 
