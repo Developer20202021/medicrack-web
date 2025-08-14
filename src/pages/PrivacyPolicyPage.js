@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ChevronDown, Mail, MapPin, Phone, User, Monitor, Settings, Zap } from 'lucide-react'; // Lucide icons for visual cues
 
+
 const PrivacyPolicyPage = () => {
   // Accordion State
   const [openAccordion, setOpenAccordion] = useState(null); // Tracks which accordion item is open
@@ -184,6 +185,7 @@ const PrivacyPolicyPage = () => {
                     <span className="font-semibold text-lg">ক. ব্যক্তিগতভাবে শনাক্তকরণযোগ্য তথ্য (PII)</span>
                     <ChevronDown className={`w-6 h-6 transform transition-transform ${openAccordion === 0 ? 'rotate-180' : 'rotate-0'}`} />
                   </button>
+               
                   <div className={`accordion-content ${openAccordion === 0 ? 'open' : ''}`}>
                     <div className="p-4 border-t">
                       <p className="mb-4">আপনি যখন আমাদের পরিষেবা ব্যবহার করেন, যেমন নিবন্ধন করেন, কোর্সে ভর্তি হন, বা আমাদের সাথে যোগাযোগ করেন, তখন আমরা আপনার কাছ থেকে নিম্নলিখিত ব্যক্তিগত তথ্য সংগ্রহ করতে পারি:</p>

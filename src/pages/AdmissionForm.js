@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import ReactPixel from 'react-facebook-pixel';
+import sha256 from 'crypto-js/sha256';
 
 // Functions to get Facebook cookie values
 function getFbClickId() {
@@ -16,6 +18,7 @@ const AdmissionForm = () => {
   // Form field states
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
+  const [phoneError, setPhoneError] = useState(''); // ফোন নম্বর ভ্যালিডেশনের জন্য নতুন স্টেট
   const [course, setCourse] = useState('HSC27');
 
   // UI state
@@ -33,11 +36,34 @@ const AdmissionForm = () => {
     }
   }, []);
 
+  // Handle real-time phone number change and validation
+  const handlePhoneChange = (e) => {
+    const inputPhone = e.target.value;
+    setPhone(inputPhone);
+
+    // Regular expression for +88 and 11-digit numbers
+    const phoneRegex = /^(?:\+88)?01\d{9}$/;
+
+    if (inputPhone.length === 0) {
+      setPhoneError('');
+    } else if (!phoneRegex.test(inputPhone)) {
+      setPhoneError('সঠিক ১১ ডিজিটের ফোন নম্বর দিন (যেমন: +88017xxxxxxxx অথবা 017xxxxxxxx)।');
+    } else {
+      setPhoneError('');
+    }
+  };
+
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
+    
+    // Check for phone number validation error before submitting
+    if (phoneError) {
+      setIsLoading(false);
+      return; 
+    }
 
     // API endpoint for the Flask server. Adjust if your server URL is different.
     const apiUrl = 'https://medicrack-web-exam-496984660515.asia-south1.run.app/api/submit_form';
@@ -68,16 +94,34 @@ const AdmissionForm = () => {
       if (response.ok) {
         // Save the UID to local storage on successful submission
         localStorage.setItem('mediquack_uid', result.uid);
+        
+          const userData = {
+              ph: sha256(phone.replace(/\D/g, '')).toString(),
+              fn: sha256(name.trim().toLowerCase()).toString(),
+              country: sha256("bd").toString(),
+              external_id: result.uid,
+              fbc:fbc,
+              fbp:fbp,
+            };
+        
+        ReactPixel.track('Lead', {
+            value: 0.0,
+            currency: 'BDT', // যেমন 'BDT'
+            content_name: course,
+            status: 'submitted',
+            event_id: result.uid,
+          }, userData );
+
         setIsSubmitted(true);
-        setMessage('ফর্ম সাবমিশন সফল হয়েছে!');
+        setMessage('ফর্ম সাবমিশন সফল হয়েছে!');
         console.log('Submission successful:', result);
       } else {
         // Handle server errors or duplicate submissions
-        setError(result.error || 'ফর্ম সাবমিট করতে সমস্যা হয়েছে।');
+        setError(result.error || 'ফর্ম সাবমিট করতে সমস্যা হয়েছে।');
       }
     } catch (err) {
       console.error('Fetch error:', err);
-      setError('সার্ভারের সাথে সংযোগে সমস্যা হয়েছে।');
+      setError('সার্ভারের সাথে সংযোগে সমস্যা হয়েছে।');
     } finally {
       setIsLoading(false);
     }
@@ -86,6 +130,15 @@ const AdmissionForm = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 to-green-100 flex items-center justify-center p-4">
       <div className="bg-white p-8 rounded-xl shadow-2xl w-full max-w-lg space-y-6 transform transition-all duration-300 hover:scale-[1.01]">
+        
+        {/* ফর্ম সাবমিট না হওয়া পর্যন্ত এই মেসেজটি দেখানো হবে */}
+        {!isSubmitted && (
+          <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4" role="alert">
+            {/* <p className="font-bold">সতর্কতা!</p> */}
+            <p>তুমি যদি **ফ্রি প্রশ্নব্যাংক** পেতে চাও, তবে নিচের ফর্মটি পূরণ করো।</p>
+          </div>
+        )}
+
         <div className="text-center">
           <h1 className="text-4xl font-bold text-gray-800 mb-2">মেডিক্র্যাক বায়োলজি একাডেমি</h1>
           
@@ -99,7 +152,7 @@ const AdmissionForm = () => {
           </div>
           
           <p className="mt-6 text-gray-600 leading-relaxed font-sans">
-            প্রিয় শিক্ষার্থী, আমি আছি তোমার জেলায় বৈরাগীর মোড়, জয়পুরহাটে 
+            প্রিয় শিক্ষার্থী, আমি আছি তোমার জেলায় বৈরাগীর মোড়, জয়পুরহাটে 
           </p>
         </div>
 
@@ -122,6 +175,14 @@ const AdmissionForm = () => {
               />
             </svg>
             <p className="font-semibold text-lg">{message}</p>
+             <a 
+              href="https://chat.whatsapp.com/CGVLQZfUgk50AzyUaTATUU"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-semibold text-white transition-all duration-300 bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-400 transform hover:scale-105"
+            >
+              WhatsApp গ্রুপে যোগ দিন
+            </a>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -150,11 +211,15 @@ const AdmissionForm = () => {
                 id="phone"
                 name="phone"
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={handlePhoneChange} // রিয়েল-টাইম ভ্যালিডেশন ফাংশন যুক্ত করা হয়েছে
                 required
-                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 transition-colors"
-                placeholder="উদাহরণ: 017xxxxxxxx"
+                className={`mt-1 block w-full px-4 py-2 border rounded-md shadow-sm transition-colors ${
+                    phoneError ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : 'border-gray-300 focus:ring-green-500 focus:border-green-500'
+                }`}
+                placeholder="উদাহরণ: 017xxxxxxxx অথবা +88017xxxxxxxx"
               />
+              {/* ভ্যালিডেশন ত্রুটি মেসেজ দেখানো হবে */}
+              {phoneError && <p className="mt-2 text-sm text-red-600">{phoneError}</p>}
             </div>
 
             <div>

@@ -22,12 +22,13 @@ import ReactPixel from 'react-facebook-pixel';
 import ReactGA from "react-ga4";
 import './App.css';
 import AboutUsPage from './pages/AboutUsPage';
+
 // KaTeX CSS এখন public/index.html থেকে লোড করা হবে, তাই এখানে আর ইম্পোর্ট করার প্রয়োজন নেই।
 // import 'katex/dist/katex.min.css';
 
 
 // --- Facebook Pixel ID সেট করুন ---
-const FACEBOOK_PIXEL_ID = '532165314321'; // <-- এখানে আপনার আসল Facebook Pixel ID দিন
+const FACEBOOK_PIXEL_ID = '1221381706690641'; // <-- এখানে আপনার আসল Facebook Pixel ID দিন
 // ----------------------------------
 
 // আপনার GA4 Measurement ID দিন
@@ -170,6 +171,7 @@ function App() {
              <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
 
              <Route path="/medicrack/admission-form" element={<AdmissionForm />} />
+            
 
             {/* কোনো ম্যাচ না হলে '/' রুটে রিডাইরেক্ট করবে */}
             <Route path="*" element={<Navigate to="/" replace />} />
