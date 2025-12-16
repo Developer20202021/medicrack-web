@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, GraduationCap } from 'lucide-react';
 
-/**
- * Medicrack এর হেডার কম্পোনেন্ট।
- *
- * @param {object} props - কম্পোনেন্টের প্রপস।
- * @param {boolean} props.isAuthenticated - ব্যবহারকারী লগইন করা আছে কিনা তা নির্দেশ করে।
- * @param {function} props.onLogout - লগআউট করার ফাংশন।
- * @returns {JSX.Element} হেডার কম্পোনেন্ট।
- */
 const Header = ({ isAuthenticated, onLogout }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [userId, setUserId] = useState('');
   const location = useLocation();
+
+  // localStorage থেকে userId লোড করুন
+  useEffect(() => {
+    const storedUserId = localStorage.getItem('userId');
+    if (storedUserId) {
+      setUserId(storedUserId);
+    }
+  }, [isAuthenticated]);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -68,6 +69,15 @@ const Header = ({ isAuthenticated, onLogout }) => {
           <Link to="/qbanks" className={getLinkClassName('/qbanks')}>
             QBank
           </Link>
+          {/* Free Course Link - শুধুমাত্র লগইন থাকলে এবং userId থাকলে */}
+          {isAuthenticated && userId && (
+            <Link 
+              to={`/freecourse/medicrack/${userId}`} 
+              className={getLinkClassName(`/freecourse/medicrack/${userId}`)}
+            >
+              Free Course
+            </Link>
+          )}
           <Link to="/blog" className={getLinkClassName('/blog')}>
             Blog
           </Link>
@@ -157,6 +167,18 @@ const Header = ({ isAuthenticated, onLogout }) => {
                 QBank
               </Link>
             </li>
+            {/* Mobile Free Course Link */}
+            {isAuthenticated && userId && (
+              <li>
+                <Link 
+                  to={`/freecourse/medicrack/${userId}`} 
+                  className={getMobileLinkClassName(`/freecourse/medicrack/${userId}`)}
+                  onClick={toggleMobileMenu}
+                >
+                  Free Course
+                </Link>
+              </li>
+            )}
             <li>
               <Link 
                 to="/blog" 
