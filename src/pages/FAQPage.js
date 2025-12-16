@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Minus } from 'lucide-react'; // Plus এবং Minus আইকন ইম্পোর্ট করা হয়েছে
+import { Plus, Minus } from 'lucide-react';
 
 /**
  * FAQ (Frequently Asked Questions) পেজ কম্পোনেন্ট।
@@ -53,40 +53,103 @@ const FAQPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 font-['Inter'] py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-lg p-6 sm:p-8 lg:p-10 border border-gray-100 mt-8">
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-center text-gray-800 mb-10 border-b-4 border-emerald-500 pb-4 inline-block mx-auto">
-          সাধারণ জিজ্ঞাসা (FAQ)
-        </h1>
+    <div className="min-h-screen  py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
+      <div className="max-w-4xl mx-auto">
+        
+        {/* Header Section */}
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-600 dark:from-emerald-400 dark:to-teal-500 rounded-2xl shadow-lg mb-6 transform hover:scale-110 transition-transform duration-300">
+            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-400 mb-4">
+            সাধারণ জিজ্ঞাসা
+          </h1>
+          
+          <div className="w-24 h-1.5 bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-400 mx-auto rounded-full mb-4"></div>
+          
+          <p className="text-gray-600 dark:text-gray-500 text-lg max-w-2xl mx-auto">
+            মেডিক্র্যাক সম্পর্কে আপনার সকল প্রশ্নের উত্তর এখানে পাবেন
+          </p>
+        </div>
 
-        <div className="space-y-6">
+        {/* FAQ Items */}
+        <div className="space-y-4">
           {faqData.map((item, index) => (
-            <div key={index} className="border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+            <div 
+              key={index} 
+              className="group bg-white dark:bg-slate-900 rounded-2xl shadow-md dark:shadow-2xl border border-gray-200 dark:border-slate-800 overflow-hidden transform transition-all duration-300 hover:shadow-xl dark:hover:shadow-emerald-500/20 hover:-translate-y-1"
+            >
               <button
-                className="flex justify-between items-center w-full p-4 sm:p-5 text-left bg-gray-50 hover:bg-gray-100 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-opacity-50 rounded-lg"
+                className="flex justify-between items-center w-full p-5 sm:p-6 text-left transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:focus:ring-emerald-400 focus:ring-opacity-50 rounded-2xl"
                 onClick={() => toggleFAQ(index)}
                 aria-expanded={openIndex === index ? "true" : "false"}
                 aria-controls={`faq-answer-${index}`}
               >
-                <span className="text-lg font-semibold text-gray-800">{item.question}</span>
-                {openIndex === index ? (
-                  <Minus size={24} className="text-emerald-600" />
-                ) : (
-                  <Plus size={24} className="text-gray-600" />
-                )}
+                <span className="text-base sm:text-lg font-semibold text-gray-800 dark:text-white pr-4 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors duration-300">
+                  {item.question}
+                </span>
+                
+                <div className={`flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-xl transition-all duration-300 ${
+                  openIndex === index 
+                    ? 'bg-gradient-to-br from-emerald-500 to-teal-600 dark:from-emerald-400 dark:to-teal-500 shadow-lg' 
+                    : 'bg-gray-100 dark:bg-slate-800 group-hover:bg-gray-200 dark:group-hover:bg-slate-700'
+                }`}>
+                  {openIndex === index ? (
+                    <Minus size={20} className="text-white" />
+                  ) : (
+                    <Plus size={20} className="text-gray-600 dark:text-gray-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors" />
+                  )}
+                </div>
               </button>
+              
               {openIndex === index && (
                 <div
                   id={`faq-answer-${index}`}
-                  className="p-4 sm:p-5 border-t border-gray-200 bg-white text-gray-700 leading-relaxed animate-fade-in"
+                  className="px-5 sm:px-6 pb-5 sm:pb-6 pt-2 border-t border-gray-100 dark:border-slate-800 animate-fade-in"
                 >
-                  {item.answer}
+                  <div className="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-slate-800 dark:to-slate-800 rounded-xl p-4 sm:p-5 border dark:border-slate-700">
+                    <p className="text-gray-700 dark:text-gray-400 leading-relaxed text-sm sm:text-base">
+                      {item.answer}
+                    </p>
+                  </div>
                 </div>
               )}
             </div>
           ))}
         </div>
+
+        {/* Bottom CTA Section */}
+        <div className="mt-12 bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-500 dark:to-teal-500 rounded-2xl p-8 text-center shadow-xl">
+          <h3 className="text-2xl font-bold text-white mb-3">
+            আরও প্রশ্ন আছে?
+          </h3>
+          <p className="text-emerald-50 dark:text-white/90 mb-6">
+            আমাদের সাপোর্ট টিম সবসময় আপনাকে সাহায্য করতে প্রস্তুত
+          </p>
+          <button className="bg-white dark:bg-slate-800 text-emerald-600 dark:text-emerald-400 font-semibold px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 border dark:border-slate-700">
+            যোগাযোগ করুন
+          </button>
+        </div>
       </div>
+
+      <style jsx>{`
+        @keyframes fade-in {
+          from {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-fade-in {
+          animation: fade-in 0.3s ease-out;
+        }
+      `}</style>
     </div>
   );
 };

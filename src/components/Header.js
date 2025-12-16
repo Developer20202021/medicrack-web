@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // React Router DOM থেকে Link ইম্পোর্ট করা হয়েছে
-import { Menu, X } from 'lucide-react'; // মোবাইল মেনুর জন্য আইকন
+import { Link, useLocation } from 'react-router-dom';
+import { Menu, X, GraduationCap } from 'lucide-react';
 
 /**
  * Medicrack এর হেডার কম্পোনেন্ট।
@@ -11,80 +11,231 @@ import { Menu, X } from 'lucide-react'; // মোবাইল মেনুর �
  * @returns {JSX.Element} হেডার কম্পোনেন্ট।
  */
 const Header = ({ isAuthenticated, onLogout }) => {
-  // মোবাইল মেনু খোলা আছে কিনা তা ট্র্যাক করার জন্য স্টেট।
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
 
-  // মোবাইল মেনু টগল করার ফাংশন।
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
+  // Active link check করার function
+  const isActive = (path) => {
+    return location.pathname === path;
+  };
+
+  // Link এর className generate করার function
+  const getLinkClassName = (path) => {
+    const baseClass = "px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200";
+    if (isActive(path)) {
+      return `${baseClass} bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg`;
+    }
+    return `${baseClass} text-gray-300 hover:text-white hover:bg-slate-700/50`;
+  };
+
+  // Mobile link এর className
+  const getMobileLinkClassName = (path) => {
+    const baseClass = "block px-4 py-3 rounded-lg transition-all duration-200";
+    if (isActive(path)) {
+      return `${baseClass} bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-medium shadow-lg`;
+    }
+    return `${baseClass} text-gray-300 hover:text-white hover:bg-slate-700/50`;
+  };
+
   return (
-    <header className="fixed top-0 left-0 w-full z-50 bg-[#17202a] text-white p-4 md:px-8 shadow-md font-['Inter']">
-      <div className=" container mx-auto flex justify-between items-center">
-        {/* লোগো বা টাইটেল - ক্লিক করলে হোম পেজে যাবে */}
-        {/* 'whitespace-nowrap overflow-hidden text-ellipsis' ক্লাসগুলো সরানো হয়েছে যাতে টাইটেলটি পুরো দেখা যায় */}
-        <Link to="/home" className="text-white text-2xl md:text-3xl font-bold flex-shrink-0">
-          <h1 className="text-white">মেডিক্র্যাক</h1>
+    <header className="fixed top-0 left-0 w-full z-50 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 backdrop-blur-md bg-opacity-95 text-white shadow-2xl border-b border-slate-700/50 font-['Inter']">
+      <div className="container mx-auto flex justify-between items-center px-4 md:px-8 py-4">
+        {/* Logo Section */}
+        <Link to="/home" className="flex items-center space-x-3 group flex-shrink-0">
+          <div className="bg-gradient-to-br from-emerald-500 to-teal-600 p-2 rounded-lg shadow-lg group-hover:shadow-emerald-500/50 transition-all duration-300">
+            <GraduationCap className="w-6 h-6 text-white" />
+          </div>
+          <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">
+            মেডিক্র্যাক
+          </h1>
         </Link>
 
-        {/* ডেস্কটপ নেভিগেশন - বড় স্ক্রিনের জন্য */}
-        <nav className="hidden md:flex items-center space-x-6">
-          <Link to="/home" className="text-white hover:text-emerald-400 transition duration-300">Home</Link>
-          <Link to="/exams" className="text-white hover:text-emerald-400 transition duration-300">Exam</Link>
-         <Link to="/faq" className="text-white hover:text-emerald-400 transition duration-300">FAQ</Link>
-          <Link to="/about-us" className="text-white hover:text-emerald-400 transition duration-300">About</Link>
-          <Link to="/contact" className="text-white hover:text-emerald-400 transition duration-300">Contact</Link>
-          <Link to="/qbanks" className="text-white hover:text-emerald-400 transition duration-300">QBank</Link>
-          <Link to="/privacy-policy" className="text-white hover:text-emerald-400 transition duration-300">Privacy Policy</Link>
-          <Link to="/blog" className="text-white hover:text-emerald-400 transition duration-300">Blog</Link>
-          <Link to="/medicrack/admission-form" className="text-white hover:text-emerald-400 transition duration-300">Admission</Link>
-          {/* আপনার যদি অন্য কোন পেজ থাকে, এখানে Link যুক্ত করতে পারেন */}
+        {/* Desktop Navigation */}
+        <nav className="hidden lg:flex items-center space-x-1">
+          <Link to="/home" className={getLinkClassName('/home')}>
+            Home
+          </Link>
+          <Link to="/exams" className={getLinkClassName('/exams')}>
+            Exam
+          </Link>
+          <Link to="/batches" className={getLinkClassName('/batches')}>
+            Batches
+          </Link>
+          <Link to="/qbanks" className={getLinkClassName('/qbanks')}>
+            QBank
+          </Link>
+          <Link to="/blog" className={getLinkClassName('/blog')}>
+            Blog
+          </Link>
+          <Link to="/faq" className={getLinkClassName('/faq')}>
+            FAQ
+          </Link>
+          <Link to="/about-us" className={getLinkClassName('/about-us')}>
+            About
+          </Link>
+          <Link to="/contact" className={getLinkClassName('/contact')}>
+            Contact
+          </Link>
+          <Link to="/privacy-policy" className={getLinkClassName('/privacy-policy')}>
+            Privacy Policy
+          </Link>
+          <Link to="/medicrack/admission-form" className={getLinkClassName('/medicrack/admission-form')}>
+            Admission
+          </Link>
         </nav>
 
-        {/* অথেন্টিকেশন বাটন (লগআউট যদি লগইন করা থাকে) এবং মোবাইল মেনু বাটন */}
-        <div className="flex items-center">
+        {/* Right Section - Auth Button & Mobile Toggle */}
+        <div className="flex items-center space-x-3">
           {isAuthenticated ? (
             <button
               onClick={onLogout}
-              className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded transition duration-300 ease-in-out text-sm md:text-base flex-shrink-0 mr-4 md:mr-0"
+              className="hidden md:block bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-semibold py-2 px-6 rounded-lg shadow-lg hover:shadow-red-500/50 transition-all duration-300 transform hover:scale-105 text-sm"
             >
               লগআউট
             </button>
           ) : (
-            // যদি লগইন করা না থাকে, তাহলে লগইন বাটন দেখান।
-            // আপনার App.js অনুযায়ী, '/' রুটেই AuthForm দেখানো হয়, তাই এখানে আলাদা লগইন বাটন নাও লাগতে পারে।
-            // তবুও একটি উদাহরণ হিসেবে রাখলাম।
-            <Link to="/" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition duration-300 ease-in-out text-sm md:text-base flex-shrink-0 mr-4 md:mr-0">
+            <Link 
+              to="/" 
+              className="hidden md:block bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white font-semibold py-2 px-6 rounded-lg shadow-lg hover:shadow-blue-500/50 transition-all duration-300 transform hover:scale-105 text-sm"
+            >
               লগইন
             </Link>
           )}
 
-          {/* মোবাইল মেনু টগল বাটন - শুধুমাত্র ছোট স্ক্রিনে দেখা যাবে */}
+          {/* Mobile Menu Toggle */}
           <button
-            className="md:hidden text-white focus:outline-none"
+            className="lg:hidden text-white p-2 rounded-lg hover:bg-slate-700/50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"
             onClick={toggleMobileMenu}
             aria-label="Toggle mobile menu"
           >
-            {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
       </div>
 
-      {/* মোবাইল মেনু কন্টেন্ট - মোবাইল মেনু খোলা থাকলে দেখা যাবে */}
+      {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <nav className="md:hidden bg-[#17202a] pb-4 pt-2 border-t border-gray-700">
-          <ul className="flex flex-col items-center space-y-3">
-            <li><Link to="/home" className="block text-white hover:text-emerald-400 transition duration-300 py-2" onClick={toggleMobileMenu}>Home</Link></li>
-            <li><Link to="/exams" className="block text-white hover:text-emerald-400 transition duration-300 py-2" onClick={toggleMobileMenu}>Exam</Link></li>
-            <li> <Link to="/faq" className="text-white hover:text-emerald-400 transition duration-300" onClick={toggleMobileMenu}>FAQ</Link></li>
-            <li> <Link to="/about-us" className="text-white hover:text-emerald-400 transition duration-300" onClick={toggleMobileMenu}>About</Link></li>
-            <li> <Link to="/contact" className="text-white hover:text-emerald-400 transition duration-300" onClick={toggleMobileMenu}>Contact</Link></li>
-            <li> <Link to="/qbanks" className="text-white hover:text-emerald-400 transition duration-300" onClick={toggleMobileMenu}>QBank</Link></li>
-            <li> <Link to="/privacy-policy" className="text-white hover:text-emerald-400 transition duration-300" onClick={toggleMobileMenu}>Privacy Policy</Link></li>
-            <li> <Link to="/blog" className="text-white hover:text-emerald-400 transition duration-300" onClick={toggleMobileMenu}>Blog</Link></li>
-             <Link to="/medicrack/admission-form" className="text-white hover:text-emerald-400 transition duration-300" onClick={toggleMobileMenu}>Admission</Link>
-            {/* আপনার অন্যান্য মোবাইল নেভিগেশন লিঙ্ক এখানে যোগ করুন */}
+        <nav className="lg:hidden bg-slate-900/95 backdrop-blur-lg border-t border-slate-700/50">
+          <ul className="flex flex-col py-4 px-4 space-y-2">
+            <li>
+              <Link 
+                to="/home" 
+                className={getMobileLinkClassName('/home')}
+                onClick={toggleMobileMenu}
+              >
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link 
+                to="/exams" 
+                className={getMobileLinkClassName('/exams')}
+                onClick={toggleMobileMenu}
+              >
+                Exam
+              </Link>
+            </li>
+            <li>
+              <Link 
+                to="/batches" 
+                className={getMobileLinkClassName('/batches')}
+                onClick={toggleMobileMenu}
+              >
+                Batches
+              </Link>
+            </li>
+            <li>
+              <Link 
+                to="/qbanks" 
+                className={getMobileLinkClassName('/qbanks')}
+                onClick={toggleMobileMenu}
+              >
+                QBank
+              </Link>
+            </li>
+            <li>
+              <Link 
+                to="/blog" 
+                className={getMobileLinkClassName('/blog')}
+                onClick={toggleMobileMenu}
+              >
+                Blog
+              </Link>
+            </li>
+            <li>
+              <Link 
+                to="/faq" 
+                className={getMobileLinkClassName('/faq')}
+                onClick={toggleMobileMenu}
+              >
+                FAQ
+              </Link>
+            </li>
+            <li>
+              <Link 
+                to="/about-us" 
+                className={getMobileLinkClassName('/about-us')}
+                onClick={toggleMobileMenu}
+              >
+                About
+              </Link>
+            </li>
+            <li>
+              <Link 
+                to="/contact" 
+                className={getMobileLinkClassName('/contact')}
+                onClick={toggleMobileMenu}
+              >
+                Contact
+              </Link>
+            </li>
+            <li>
+              <Link 
+                to="/privacy-policy" 
+                className={getMobileLinkClassName('/privacy-policy')}
+                onClick={toggleMobileMenu}
+              >
+                Privacy Policy
+              </Link>
+            </li>
+            <li>
+              <Link 
+                to="/medicrack/admission-form" 
+                className={getMobileLinkClassName('/medicrack/admission-form')}
+                onClick={toggleMobileMenu}
+              >
+                Admission
+              </Link>
+            </li>
+            
+            {/* Mobile Auth Button */}
+            {isAuthenticated ? (
+              <li className="pt-2">
+                <button
+                  onClick={() => {
+                    onLogout();
+                    toggleMobileMenu();
+                  }}
+                  className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-semibold py-3 px-4 rounded-lg shadow-lg transition-all duration-300"
+                >
+                  লগআউট
+                </button>
+              </li>
+            ) : (
+              <li className="pt-2">
+                <Link 
+                  to="/" 
+                  className="block w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white font-semibold py-3 px-4 rounded-lg shadow-lg transition-all duration-300 text-center"
+                  onClick={toggleMobileMenu}
+                >
+                  লগইন
+                </Link>
+              </li>
+            )}
           </ul>
         </nav>
       )}

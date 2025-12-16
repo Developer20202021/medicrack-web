@@ -22,6 +22,7 @@ import ReactPixel from 'react-facebook-pixel';
 import ReactGA from "react-ga4";
 import './App.css';
 import AboutUsPage from './pages/AboutUsPage';
+import BatchSchedulePage from './pages/BatchSchedulePage';
 
 // KaTeX CSS এখন public/index.html থেকে লোড করা হবে, তাই এখানে আর ইম্পোর্ট করার প্রয়োজন নেই।
 // import 'katex/dist/katex.min.css';
@@ -30,7 +31,7 @@ import AboutUsPage from './pages/AboutUsPage';
 // --- Facebook Pixel ID সেট করুন ---
 const FACEBOOK_PIXEL_ID = '1221381706690641'; // <-- এখানে আপনার আসল Facebook Pixel ID দিন
 // ----------------------------------
-
+const API_BASE_URL = 'https://medicrack-web-exam-496984660515.asia-south1.run.app/api';
 // আপনার GA4 Measurement ID দিন
 const GA_MEASUREMENT_ID = "G-asdfadsf";
 ReactGA.initialize(GA_MEASUREMENT_ID);
@@ -89,6 +90,110 @@ function useFacebookPixelPageView() {
 }
 // ------------------------------------------------------------------
 
+
+// Get all batches where user has access
+export const getMyBatches = async () => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    throw new Error('কোনো অথেন্টিকেশন টোকেন পাওয়া যায়নি।');
+  }
+  try {
+    const response = await fetch(`${API_BASE_URL}/batch/my-batches`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || 'Batch তালিকা আনতে ব্যর্থ হয়েছে');
+    }
+    return data;
+  } catch (error) {
+    console.error("Batch তালিকা আনতে এরর:", error);
+    throw error;
+  }
+};
+
+// Today's schedule with automatic batch_id
+export const getTodaySchedule = async (batchId, date = null) => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    throw new Error('কোনো অথেন্টিকেশন টোকেন পাওয়া যায়নি।');
+  }
+  try {
+    const body = { batch_id: batchId };
+    if (date) body.date = date;
+
+    const response = await fetch(`${API_BASE_URL}/batch/today-schedule`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(body)
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || 'আজকের schedule আনতে ব্যর্থ হয়েছে');
+    }
+    return data;
+  } catch (error) {
+    console.error("আজকের schedule আনতে এরর:", error);
+    throw error;
+  }
+};
+
+// Schedule history
+export const getScheduleHistory = async (batchId, limit = 50) => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    throw new Error('কোনো অথেন্টিকেশন টোকেন পাওয়া যায়নি।');
+  }
+  try {
+    const response = await fetch(`${API_BASE_URL}/batch/schedule-history`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({ batch_id: batchId, limit })
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || 'Schedule history আনতে ব্যর্থ হয়েছে');
+    }
+    return data;
+  } catch (error) {
+    console.error("Schedule history আনতে এরর:", error);
+    throw error;
+  }
+};
+
+// Upcoming schedules
+export const getUpcomingSchedules = async (batchId) => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    throw new Error('কোনো অথেন্টিকেশন টোকেন পাওয়া যায়নি।');
+  }
+  try {
+    const response = await fetch(`${API_BASE_URL}/batch/upcoming-schedules`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({ batch_id: batchId })
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || 'Upcoming schedules আনতে ব্যর্থ হয়েছে');
+    }
+    return data;
+  } catch (error) {
+    console.error("Upcoming schedules আনতে এরর:", error);
+    throw error;
+  }
+};
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -161,6 +266,10 @@ function App() {
               path="/exam/:examId"
               element={isAuthenticated ? <ExamPage /> : <Navigate to="/" replace />}
             />
+            <Route 
+            path="/batches" 
+            element={isAuthenticated ? <BatchSchedulePage /> : <Navigate to="/" replace />} 
+          />
             <Route
               path="/result/:examId/:userId"
               element={isAuthenticated ? <ResultPage /> : <Navigate to="/" replace />}

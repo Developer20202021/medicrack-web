@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { renderEditorJsContent } from '../components/renderContent'; // আপনার renderContent.js ফাইলটি ইম্পোর্ট করুন
-import DOMPurify from 'dompurify'; // স্যানিটাইজেশনের জন্য
+import { renderEditorJsContent } from '../components/renderContent';
+import DOMPurify from 'dompurify';
 
 function BlogDetail() {
-    const { id } = useParams(); // URL থেকে পোস্ট ID পান
+    const { id } = useParams();
     const navigate = useNavigate();
     const [post, setPost] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [showScrollButton, setShowScrollButton] = useState(false);
-    const [headersForSidebar, setHeadersForSidebar] = useState([]); // সাইডবারের জন্য হেডারগুলি সংরক্ষণের জন্য স্টেট
-    const [headerIdMap, setHeaderIdMap] = useState({}); // আসল ব্লক ইনডেক্স থেকে হেডার ID ম্যাপ করার জন্য স্টেট
-    const [isMobile, setIsMobile] = useState(false); // মোবাইল ডিভাইসের জন্য স্টেট
+    const [headersForSidebar, setHeadersForSidebar] = useState([]);
+    const [headerIdMap, setHeaderIdMap] = useState({});
+    const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
         const fetchPost = async () => {
@@ -32,37 +32,27 @@ function BlogDetail() {
                 const tempHeadersForSidebar = [];
                 const tempHeaderIdMap = {};
 
-                // প্রতিটি ব্লকের উপর লুপ চালান এবং হেডারগুলি এক্সট্রাক্ট করুন ও ID তৈরি করুন
                 (data.content?.blocks || []).forEach((block, originalIndex) => {
                     if (block.type === 'header') {
                         const rawText = block.data.text || '';
-                        // HTML entities (like &nbsp;) and multiple spaces are handled in renderContent.js
-                        // Here, we just do a basic trim for ID generation
                         const cleanedTextForId = rawText
-                            .replace(/&nbsp;/g, ' ') // Replace &nbsp; with space for ID generation
-                            .replace(/\s+/g, ' ')    // Replace multiple spaces with single space
+                            .replace(/&nbsp;/g, ' ')
+                            .replace(/\s+/g, ' ')
                             .trim();
 
-                        // হেডারের জন্য একটি অনন্য এবং স্থিতিশীল ID তৈরি করুন, যাতে শুধুমাত্র বৈধ অক্ষর থাকে
-                        const headerId = `header-${originalIndex}-${cleanedTextForId.toLowerCase().replace(/[^a-z0-9-]+/g, '').substring(0, 50)}`; 
+                        const headerId = `header-${originalIndex}-${cleanedTextForId.toLowerCase().replace(/[^a-z0-9-]+/g, '').substring(0, 50)}`;
 
                         tempHeadersForSidebar.push({
-                            text: cleanedTextForId, // Cleaned text for sidebar display
+                            text: cleanedTextForId,
                             level: block.data.level,
-                            id: headerId // অনন্য ID
+                            id: headerId
                         });
-                        // renderContent.js-এ সহজ লুকআপের জন্য ম্যাপে ID সংরক্ষণ করুন
-                        tempHeaderIdMap[originalIndex] = { id: headerId }; 
+                        tempHeaderIdMap[originalIndex] = { id: headerId };
                     }
                 });
 
                 setHeadersForSidebar(tempHeadersForSidebar);
                 setHeaderIdMap(tempHeaderIdMap);
-
-                // console.log('Post data received in BlogDetail:', data);
-                // console.log('Content blocks received:', data.content?.blocks);
-                // console.log('Generated Headers for Sidebar:', tempHeadersForSidebar);
-                // console.log('Generated Header ID Map:', tempHeaderIdMap);
                 setLoading(false);
             } catch (err) {
                 console.error("Error fetching post:", err);
@@ -74,7 +64,6 @@ function BlogDetail() {
         fetchPost();
     }, [id]);
 
-    // স্ক্রল ইভেন্ট লিসেনার যুক্ত করার জন্য useEffect
     useEffect(() => {
         const handleScroll = () => {
             setShowScrollButton(window.scrollY > 300);
@@ -83,27 +72,23 @@ function BlogDetail() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // উইন্ডোর সাইজ চেক করার জন্য useEffect
     useEffect(() => {
         const checkMobile = () => {
-            // 768px এর নিচে মোবাইল স্ক্রিন হিসেবে ধরে নিচ্ছি
             setIsMobile(window.innerWidth < 768);
         };
-        checkMobile(); // কম্পোনেন্ট মাউন্ট হওয়ার সময় একবার চেক করুন
-        window.addEventListener('resize', checkMobile); // রিসাইজ ইভেন্টে চেক করুন
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
         return () => window.removeEventListener('resize', checkMobile);
     }, []);
 
-    // উপরে স্ক্রল করার ফাংশন
     const scrollToTop = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    // নির্দিষ্ট হেডারে স্ক্রল করার ফাংশন
     const scrollToHeader = (id) => {
         const element = document.getElementById(id);
         if (element) {
-            const headerOffset = 80; // আপনার ফিক্সড হেডার/ন্যাভবারের উচ্চতা অনুযায়ী এটি পরিবর্তন করুন
+            const headerOffset = 80;
             const elementPosition = element.getBoundingClientRect().top + window.scrollY;
             window.scrollTo({
                 top: elementPosition - headerOffset,
@@ -114,138 +99,155 @@ function BlogDetail() {
         }
     };
 
-    if (loading) return <div style={{ textAlign: 'center', padding: '20px' }}>পোস্ট লোড হচ্ছে...</div>;
-    if (error) return <div style={{ textAlign: 'center', padding: '20px', color: 'red' }}>এরর: {error}</div>;
-    if (!post) return <div style={{ textAlign: 'center', padding: '20px' }}>পোস্ট পাওয়া যায়নি।</div>;
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-950 dark:via-slate-900 dark:to-gray-950 flex items-center justify-center py-20 px-4 transition-colors duration-300">
+                <div className="text-center">
+                    <div className="relative inline-block">
+                        <div className="w-16 h-16 border-4 border-emerald-200 dark:border-emerald-900 rounded-full"></div>
+                        <div className="w-16 h-16 border-4 border-emerald-600 dark:border-emerald-400 border-t-transparent rounded-full animate-spin absolute top-0"></div>
+                    </div>
+                    <p className="text-lg text-gray-600 dark:text-gray-400 mt-6 animate-pulse">পোস্ট লোড হচ্ছে...</p>
+                </div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-950 dark:via-slate-900 dark:to-gray-950 flex items-center justify-center py-20 px-4 transition-colors duration-300">
+                <div className="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 dark:border-red-400 p-6 rounded-lg max-w-md">
+                    <p className="text-red-700 dark:text-red-300 text-lg">এরর: {error}</p>
+                </div>
+            </div>
+        );
+    }
+
+    if (!post) {
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-950 dark:via-slate-900 dark:to-gray-950 flex items-center justify-center py-20 px-4 transition-colors duration-300">
+                <div className="text-center">
+                    <svg className="w-16 h-16 text-gray-400 dark:text-gray-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    <p className="text-lg text-gray-600 dark:text-gray-400">পোস্ট পাওয়া যায়নি।</p>
+                </div>
+            </div>
+        );
+    }
 
     const sanitizedTitle = DOMPurify.sanitize(post.title || '');
 
     return (
-        <div style={{
-            padding: '20px',
-            maxWidth: isMobile ? '100%' : '1200px', // মোবাইল হলে ফুল উইডথ, ডেস্কটপ হলে 1200px
-            margin: '0 auto',
-            fontFamily: "'Tiro Bangla', serif",
-            position: 'relative',
-            display: 'flex', // ফ্লেক্সবক্স ব্যবহার করা হয়েছে
-            flexDirection: isMobile ? 'column' : 'row', // মোবাইল হলে কলাম, ডেস্কটপ হলে রো
-            justifyContent: 'space-between', // কন্টেন্ট এবং সাইডবারকে আলাদা করতে
-            gap: '30px' // কন্টেন্ট এবং সাইডবারের মধ্যে ব্যবধান
-        }}>
-            {/* মূল কন্টেন্ট এরিয়া */}
-            <div style={{
-                flex: isMobile ? 'none' : 3, // মোবাইল হলে ফ্লেক্স প্রপার্টি নিষ্ক্রিয়, ডেস্কটপ হলে 3
-                minWidth: 0, // ফ্লেক্স আইটেম overflow প্রতিরোধ করতে
-                maxWidth: isMobile ? '100%' : 'auto', // মোবাইল হলে 100% উইডথ
-            }}>
-                <button
-                    onClick={() => navigate(-1)} // এক ধাপ পিছনে যান
-                    style={{
-                        padding: '10px 20px',
-                        backgroundColor: '#6c757d',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '5px',
-                        cursor: 'pointer',
-                        fontSize: '1em',
-                        transition: 'background-color 0.3s ease',
-                        marginBottom: '20px',
-                    }}
-                >
-                    &larr; সব পোস্ট দেখুন
-                </button>
+        <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-950 dark:via-slate-900 dark:to-gray-950 py-8 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
+            <div 
+                className={`mx-auto ${isMobile ? 'max-w-full' : 'max-w-7xl'}`}
+                style={{ fontFamily: "'Tiro Bangla', serif" }}
+            >
+                <div className={`flex ${isMobile ? 'flex-col' : 'flex-row'} gap-8`}>
+                    
+                    {/* Main Content Area */}
+                    <div className={`${isMobile ? 'w-full' : 'flex-[3]'} min-w-0`}>
+                        
+                        {/* Back Button */}
+                        <button
+                            onClick={() => navigate(-1)}
+                            className="group flex items-center gap-2 px-5 py-3 bg-white dark:bg-slate-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-slate-700 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-700 transition-all duration-300 shadow-sm hover:shadow-md mb-6 font-semibold"
+                        >
+                            <svg className="w-5 h-5 transform group-hover:-translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                            </svg>
+                            সব পোস্ট দেখুন
+                        </button>
 
-                <h1 style={{ color: '#333', marginBottom: '20px', fontSize: '1.7em' }}>{sanitizedTitle}</h1>
-                <p style={{ fontSize: '0.9em', color: '#888', marginBottom: '30px' }}>
-                    প্রকাশিত: {post.timestamp ? new Date(post.timestamp).toLocaleString() : 'সময় অজানা'}
-                </p>
+                        {/* Post Title */}
+                        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-4 leading-tight">
+                            {sanitizedTitle}
+                        </h1>
 
-                <div
-                    style={{
-                        border: '1px solid #eee',
-                        padding: '20px',
-                        marginBottom: '20px',
-                        borderRadius: '8px',
-                        boxShadow: '0 2px 5px rgba(0,0,0,0.05)',
-                        backgroundColor: '#fff',
-                    }}
-                >
-                    {/* Editor.js কন্টেন্ট রেন্ডার করার জন্য renderEditorJsContent ব্যবহার করুন */}
-                    {post.content && post.content.blocks && (
-                        <div dangerouslySetInnerHTML={{ __html: renderEditorJsContent(post.content.blocks, headerIdMap) }} style={{ lineHeight: '1.6' }} />
+                        {/* Post Meta */}
+                        <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-500 mb-8 pb-6 border-b border-gray-200 dark:border-slate-800">
+                            <div className="flex items-center gap-2">
+                                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
+                                </svg>
+                                <span className="font-medium">
+                                    প্রকাশিত: {post.timestamp ? new Date(post.timestamp).toLocaleDateString('bn-BD') : 'সময় অজানা'}
+                                </span>
+                            </div>
+                        </div>
+
+                        {/* Post Content */}
+                        <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl shadow-lg dark:shadow-2xl p-6 sm:p-8 lg:p-10">
+                            {post.content && post.content.blocks && (
+                                <div 
+                                    dangerouslySetInnerHTML={{ __html: renderEditorJsContent(post.content.blocks, headerIdMap) }} 
+                                    className="prose dark:prose-invert max-w-none prose-headings:text-gray-900 dark:prose-headings:text-white prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-a:text-emerald-600 dark:prose-a:text-emerald-400 prose-strong:text-gray-900 dark:prose-strong:text-white prose-img:rounded-xl"
+                                    style={{ lineHeight: '1.8' }}
+                                />
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Sidebar - Table of Contents */}
+                    {!isMobile && headersForSidebar.length > 0 && (
+                        <div className="flex-1 min-w-0">
+                            <div className="sticky top-8 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl shadow-lg dark:shadow-2xl p-6 max-h-[calc(100vh-4rem)] overflow-y-auto">
+                                <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-200 dark:border-slate-800">
+                                    <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 dark:from-emerald-400 dark:to-teal-500 rounded-lg flex items-center justify-center">
+                                        <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" />
+                                        </svg>
+                                    </div>
+                                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">সূচিপত্র</h3>
+                                </div>
+                                
+                                <ul className="space-y-2">
+                                    {headersForSidebar.map(header => (
+                                        <li key={header.id}>
+                                            <a
+                                                href={`#${header.id}`}
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    scrollToHeader(header.id);
+                                                }}
+                                                className={`block py-2 px-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-emerald-50 dark:hover:bg-slate-800 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all duration-200 ${
+                                                    header.level < 3 ? 'font-semibold' : 'font-normal'
+                                                }`}
+                                                style={{
+                                                    paddingLeft: `${(header.level - 1) * 15 + 12}px`,
+                                                    fontSize: header.level === 1 ? '1.1em' : header.level === 2 ? '1em' : '0.95em'
+                                                }}
+                                            >
+                                                <span className="flex items-start gap-2">
+                                                    <span className="text-emerald-600 dark:text-emerald-400 mt-1">•</span>
+                                                    <span dangerouslySetInnerHTML={{ 
+                                                        __html: DOMPurify.sanitize(header.text, { USE_PROFILES: { html: true } })
+                                                    }} />
+                                                </span>
+                                            </a>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
                     )}
                 </div>
             </div>
 
-            {/* হেডারগুলির জন্য সাইডবার (মোবাইল ডিভাইসে লুকানো থাকবে) */}
-            {!isMobile && ( // isMobile সত্য হলে এই div রেন্ডার হবে না
-                <div style={{
-                    flex: 1, // সাইডবারের জন্য ফ্লেক্স আইটেম
-                    position: 'sticky', // স্ক্রল করার সময় স্থির থাকবে
-                    top: '20px', // উপরে থেকে কিছুটা নিচে শুরু হবে
-                    alignSelf: 'flex-start', // কন্টেন্টের উপরে এলাইন করবে
-                    padding: '20px',
-                    borderLeft: '1px solid #eee', // বাম পাশে একটি বর্ডার
-                    backgroundColor: '#f9f9f9',
-                    borderRadius: '8px',
-                    maxHeight: 'calc(100vh - 40px)', // ভিউপোর্ট হাইটের ওপর ভিত্তি করে ম্যাক্স হাইট
-                    overflowY: 'auto' // কন্টেন্ট বেশি হলে স্ক্রলবার দেখাবে
-                }}>
-                    <h3 style={{ color: '#555', marginBottom: '15px', marginTop: '0' }}>সূচিপত্র</h3>
-                    <ul style={{ listStyle: 'none', padding: 0 }}>
-                        {headersForSidebar.map(header => (
-                            <li key={header.id} style={{ marginBottom: '10px' }}>
-                                <a
-                                    href={`#${header.id}`}
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        scrollToHeader(header.id);
-                                    }}
-                                    style={{
-                                        marginTop:'20px',
-                                        textDecoration: 'none',
-                                        color: '#000000',
-                                        fontSize: `1.2em`, // হেডার লেভেল অনুযায়ী ফন্ট সাইজ
-                                        fontWeight: header.level < 3 ? 'bold' : 'normal',
-                                        display: 'block',
-                                        paddingLeft: `${(header.level - 1) * 15}px`, // লেভেল অনুযায়ী ইনডেন্টেশন
-                                    }}
-                                >
-                                    {DOMPurify.sanitize(header.text, { USE_PROFILES: { html: true } })} {/* এখানেও স্যানিটাইজেশন নিশ্চিত করুন */}
-                                </a>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            )}
-
-            {/* ফ্লোটিং উপরে স্ক্রল করার বাটন */}
+            {/* Floating Scroll to Top Button */}
             {showScrollButton && (
                 <button
                     onClick={scrollToTop}
+                    className="fixed bottom-8 right-8 w-14 h-14 bg-gradient-to-br from-emerald-600 to-teal-600 dark:from-emerald-500 dark:to-teal-500 text-white rounded-2xl shadow-xl hover:shadow-2xl flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110 active:scale-95 z-50"
                     style={{
-                        position: 'fixed',
-                        bottom: '30px',
-                        right: '30px',
-                        backgroundColor: '#007bff',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '8px',
-                        width: '40px',
-                        height: '40px',
-                        fontSize: '1.5em',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        cursor: 'pointer',
-                        boxShadow: '0 2px 10px rgba(0,0,0,0.2)',
-                        transition: 'background-color 0.3s ease, opacity 0.3s ease',
-                        zIndex: 1000,
                         opacity: showScrollButton ? 1 : 0,
                         visibility: showScrollButton ? 'visible' : 'hidden'
                     }}
                 >
-                    &uarr;
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                    </svg>
                 </button>
             )}
         </div>
