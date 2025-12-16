@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 
 const SecurePDFViewer = () => {
+  // Mock data for demonstration - replace with actual router data
   const location = useLocation();
   const { fileId, email } = location.state || {};
+  
   const [pdfUrl, setPdfUrl] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const iframeRef = useRef(null);
 
   useEffect(() => {
     const fetchPDF = async () => {
@@ -41,6 +44,68 @@ const SecurePDFViewer = () => {
     };
   }, [fileId, email]);
 
+  // Hide PDF viewer buttons after iframe loads
+  useEffect(() => {
+    if (!pdfUrl || !iframeRef.current) return;
+
+    const iframe = iframeRef.current;
+    
+    const hideButtons = () => {
+      try {
+        // Try to access iframe content (works for same-origin)
+        const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
+        
+        if (iframeDoc) {
+          // Inject CSS to hide print/download buttons
+          const style = iframeDoc.createElement('style');
+          style.textContent = `
+            /* Hide print button */
+            button[title*="Print"],
+            button[title*="print"],
+            #print,
+            .print,
+            [data-l10n-id="print"],
+            #printButton,
+            
+            /* Hide download button */
+            button[title*="Download"],
+            button[title*="download"],
+            #download,
+            .download,
+            [data-l10n-id="download"],
+            #downloadButton,
+            
+            /* Hide save button */
+            button[title*="Save"],
+            #save,
+            .save,
+            
+            /* Chrome PDF viewer specific */
+            #download-button,
+            #print-button,
+            cr-icon-button[iron-icon="cr:file-download"],
+            cr-icon-button[iron-icon="cr:print"] {
+              display: none !important;
+              visibility: hidden !important;
+              opacity: 0 !important;
+              pointer-events: none !important;
+            }
+          `;
+          iframeDoc.head?.appendChild(style);
+        }
+      } catch (e) {
+        // Cross-origin restriction - can't access iframe content
+        console.log('Cannot access iframe content due to CORS');
+      }
+    };
+
+    iframe.addEventListener('load', hideButtons);
+    
+    return () => {
+      iframe.removeEventListener('load', hideButtons);
+    };
+  }, [pdfUrl]);
+
   // Enhanced print and save protection
   useEffect(() => {
     const preventPrint = (e) => {
@@ -72,20 +137,17 @@ const SecurePDFViewer = () => {
       }
     };
 
-    // Multiple layers of print protection
     window.addEventListener('beforeprint', preventPrint, true);
     window.addEventListener('afterprint', preventPrint, true);
     window.addEventListener('keydown', handleKeyDown, true);
     document.addEventListener('keydown', handleKeyDown, true);
 
-    // Override window.print completely
     const originalPrint = window.print;
     window.print = function() {
       alert('⚠️ Print functionality disabled আছে!');
       return false;
     };
 
-    // Hide print button in PDF viewer if possible
     const style = document.createElement('style');
     style.innerHTML = `
       @media print {
@@ -158,6 +220,7 @@ const SecurePDFViewer = () => {
     <div className="relative w-full h-screen bg-gray-950 overflow-hidden">
       {/* PDF Viewer */}
       <iframe
+        ref={iframeRef}
         src={pdfUrl}
         className="w-full h-full"
         title="PDF Viewer"
@@ -167,97 +230,99 @@ const SecurePDFViewer = () => {
       
       {/* Watermark Overlay */}
       <div className="pointer-events-none absolute inset-0" style={{ zIndex: 9999 }}>
-        {/* Center HUGE Watermark - Main Protection */}
+        {/* Center Watermark - Subtle and Elegant */}
         <div className="absolute inset-0 flex items-center justify-center">
           <div 
-            className="transform rotate-[-45deg] text-white font-black opacity-15 select-none px-12 py-8 rounded-3xl shadow-2xl"
+            className="transform rotate-[-45deg] text-white font-bold select-none"
             style={{
-              fontSize: '5rem',
-              background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.4) 0%, rgba(147, 51, 234, 0.4) 100%)',
-              backdropFilter: 'blur(8px)',
-              textShadow: '0 4px 20px rgba(0,0,0,0.5)',
-              letterSpacing: '0.1em',
-              lineHeight: '1.2'
+              fontSize: 'clamp(1.5rem, 5vw, 3rem)',
+              opacity: 0.06,
+              textShadow: '0 2px 10px rgba(0,0,0,0.3)',
+              letterSpacing: '0.15em',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              maxWidth: '90vw',
+              padding: '1rem'
             }}
           >
             {email}
           </div>
         </div>
 
-        {/* Secondary Watermarks - Diagonal Pattern */}
-        <div className="absolute top-1/4 left-1/4 transform -translate-x-1/2 -translate-y-1/2 rotate-[-30deg] text-blue-400 text-3xl font-bold opacity-10 select-none">
-          {email}
-        </div>
-        <div className="absolute top-1/4 right-1/4 transform translate-x-1/2 -translate-y-1/2 rotate-[30deg] text-purple-400 text-3xl font-bold opacity-10 select-none">
-          {email}
-        </div>
-        <div className="absolute bottom-1/4 left-1/4 transform -translate-x-1/2 translate-y-1/2 rotate-[30deg] text-purple-400 text-3xl font-bold opacity-10 select-none">
-          {email}
-        </div>
-        <div className="absolute bottom-1/4 right-1/4 transform translate-x-1/2 translate-y-1/2 rotate-[-30deg] text-blue-400 text-3xl font-bold opacity-10 select-none">
-          {email}
-        </div>
+        {/* Repeating Pattern - Very Subtle */}
+        {[...Array(6)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute transform rotate-[-45deg] text-blue-300 font-medium select-none"
+            style={{
+              top: `${15 + i * 15}%`,
+              left: `${10 + (i % 2) * 40}%`,
+              fontSize: 'clamp(0.7rem, 2vw, 1rem)',
+              opacity: 0.04,
+              whiteSpace: 'nowrap'
+            }}
+          >
+            {email}
+          </div>
+        ))}
 
-        {/* Top Left */}
-        <div className="absolute top-6 left-6 bg-gradient-to-br from-gray-900/95 to-gray-800/95 text-blue-300 px-5 py-3 rounded-xl text-sm font-mono shadow-2xl border-2 border-blue-700/50">
-          <span className="flex items-center gap-2">
-            <span className="text-lg">🔒</span>
-            <span className="font-bold">{email}</span>
+        {/* Corner Badges - Clean and Minimal */}
+        <div className="hidden sm:block absolute top-3 left-3 bg-gray-900/70 backdrop-blur-sm text-blue-400 px-3 py-1.5 rounded-lg text-xs font-medium border border-blue-500/20">
+          <span className="flex items-center gap-1.5">
+            <span className="text-sm">🔒</span>
+            <span className="hidden md:inline truncate max-w-[150px]">{email}</span>
           </span>
         </div>
         
-        {/* Top Right */}
-        <div className="absolute top-6 right-6 bg-gradient-to-bl from-gray-800/95 to-gray-900/95 text-blue-300 px-5 py-3 rounded-xl text-sm font-mono shadow-2xl border-2 border-blue-700/50">
-          <span className="flex items-center gap-2">
-            <span className="font-bold">{email}</span>
-            <span className="text-lg">🔒</span>
+        <div className="hidden sm:block absolute top-3 right-3 bg-gray-900/70 backdrop-blur-sm text-blue-400 px-3 py-1.5 rounded-lg text-xs font-medium border border-blue-500/20">
+          <span className="flex items-center gap-1.5">
+            <span className="hidden md:inline truncate max-w-[150px]">{email}</span>
+            <span className="text-sm">🔒</span>
           </span>
         </div>
         
-        {/* Bottom Left */}
-        <div className="absolute bottom-6 left-6 bg-gradient-to-tr from-gray-900/95 to-gray-800/95 text-blue-300 px-5 py-3 rounded-xl text-sm font-mono shadow-2xl border-2 border-purple-700/50">
-          <span className="flex items-center gap-2">
-            <span className="text-lg">🔒</span>
-            <span className="font-bold">{email}</span>
+        <div className="hidden sm:block absolute bottom-3 left-3 bg-gray-900/70 backdrop-blur-sm text-purple-400 px-3 py-1.5 rounded-lg text-xs font-medium border border-purple-500/20">
+          <span className="flex items-center gap-1.5">
+            <span className="text-sm">🔒</span>
+            <span className="hidden md:inline truncate max-w-[150px]">{email}</span>
           </span>
         </div>
         
-        {/* Bottom Right */}
-        <div className="absolute bottom-6 right-6 bg-gradient-to-tl from-gray-800/95 to-gray-900/95 text-blue-300 px-5 py-3 rounded-xl text-sm font-mono shadow-2xl border-2 border-purple-700/50">
-          <span className="flex items-center gap-2">
-            <span className="font-bold">{email}</span>
-            <span className="text-lg">🔒</span>
+        <div className="hidden sm:block absolute bottom-3 right-3 bg-gray-900/70 backdrop-blur-sm text-purple-400 px-3 py-1.5 rounded-lg text-xs font-medium border border-purple-500/20">
+          <span className="flex items-center gap-1.5">
+            <span className="hidden md:inline truncate max-w-[150px]">{email}</span>
+            <span className="text-sm">🔒</span>
           </span>
         </div>
 
-        {/* Top Center */}
-        <div className="absolute top-6 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-blue-900/90 to-purple-900/90 text-white px-8 py-3 rounded-full text-sm font-bold shadow-2xl border-2 border-blue-500">
+        {/* Top Center - Protected Badge */}
+        <div className="absolute top-3 left-1/2 transform -translate-x-1/2 bg-blue-900/60 backdrop-blur-sm text-white px-4 py-1.5 rounded-full text-xs font-semibold border border-blue-400/30 shadow-lg">
           <span className="flex items-center gap-2">
-            <span>📄</span>
-            <span>PROTECTED DOCUMENT</span>
-            <span className="text-blue-300">•</span>
-            <span className="text-blue-200">{email}</span>
+            <span className="hidden sm:inline">📄</span>
+            <span className="hidden md:inline"></span>
+            <span className="md:hidden">🔒</span>
+            <span className="hidden sm:inline text-blue-200 truncate max-w-[120px] sm:max-w-[200px]">{email}</span>
           </span>
         </div>
 
-        {/* Bottom Center */}
-        <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-red-900/90 to-orange-900/90 text-white px-8 py-3 rounded-full text-sm font-bold shadow-2xl border-2 border-red-500">
+        {/* Bottom Center - Warning Badge */}
+        <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 bg-red-900/60 backdrop-blur-sm text-white px-4 py-1.5 rounded-full text-xs font-semibold border border-red-400/30 shadow-lg">
           <span className="flex items-center gap-2">
             <span>⚠️</span>
-            <span>PRINT & DOWNLOAD DISABLED</span>
-            <span className="text-yellow-300">•</span>
-            <span className="text-yellow-200">{email}</span>
+            <span className="hidden sm:inline"></span>
+            <span className="sm:hidden"></span>
+            <span className="hidden md:inline text-yellow-200 truncate max-w-[120px] sm:max-w-[200px]">{email}</span>
           </span>
         </div>
 
-        {/* Middle Left */}
-        <div className="absolute top-1/2 left-6 transform -translate-y-1/2 bg-gradient-to-r from-indigo-900/80 to-blue-900/80 text-white px-4 py-6 rounded-xl text-xs font-mono shadow-2xl border-2 border-indigo-500 rotate-[-90deg] origin-center">
-          {email}
+        {/* Side Badges - Hidden on Mobile */}
+        <div className="hidden lg:block absolute top-1/2 left-3 transform -translate-y-1/2 bg-indigo-900/50 backdrop-blur-sm text-white px-2 py-3 rounded-lg text-xs font-mono border border-indigo-500/20 rotate-[-90deg] origin-center">
+          <span className="truncate max-w-[100px] block">{email}</span>
         </div>
 
-        {/* Middle Right */}
-        <div className="absolute top-1/2 right-6 transform -translate-y-1/2 bg-gradient-to-r from-blue-900/80 to-indigo-900/80 text-white px-4 py-6 rounded-xl text-xs font-mono shadow-2xl border-2 border-indigo-500 rotate-[90deg] origin-center">
-          {email}
+        <div className="hidden lg:block absolute top-1/2 right-3 transform -translate-y-1/2 bg-indigo-900/50 backdrop-blur-sm text-white px-2 py-3 rounded-lg text-xs font-mono border border-indigo-500/20 rotate-[90deg] origin-center">
+          <span className="truncate max-w-[100px] block">{email}</span>
         </div>
       </div>
       
@@ -270,7 +335,7 @@ const SecurePDFViewer = () => {
         onDragStart={(e) => e.preventDefault()}
         style={{ 
           zIndex: 9998,
-          background: 'repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(59, 130, 246, 0.02) 20px, rgba(59, 130, 246, 0.02) 40px)'
+          background: 'repeating-linear-gradient(45deg, transparent, transparent 30px, rgba(59, 130, 246, 0.01) 30px, rgba(59, 130, 246, 0.01) 60px)'
         }}
       />
 
