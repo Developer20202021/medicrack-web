@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Calendar, Clock, Video, Users, BookOpen, AlertCircle, ChevronRight, ExternalLink, Timer, Menu, X, ChevronDown } from 'lucide-react';
-
+import { Calendar, Clock, Video, Users, BookOpen, AlertCircle, ChevronRight, ExternalLink, Timer, Menu, X, ChevronDown, CheckCircle, FileText, Eye, Download } from 'lucide-react';
 // API Base URL
 const API_BASE_URL = 'https://medicrack-web-exam-496984660515.asia-south1.run.app/api';
+const PDF_VIEW_BASE_URL = 'https://medicrack-pdf-upload-view-496984660515.asia-south1.run.app/api/pdf-view';
 
+// Generate email from userId
+const generateUserEmail = (userId) => {
+  return `${userId}@medicrack.com`;
+};
 // Utility Functions
 const convertTo12Hour = (time24) => {
   if (!time24) return '';
@@ -97,6 +101,15 @@ const getUpcomingSchedules = async (batchId) => {
   });
   const data = await response.json();
   if (!response.ok) throw new Error(data.message || 'Failed to fetch upcoming schedules');
+  return data;
+};
+
+const getExamResult = async (examId, userId) => {
+  const response = await fetch(`${API_BASE_URL}/exams/${examId}/result/${userId}`, {
+    headers: getAuthHeaders(),
+  });
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.msg || 'Failed to fetch exam result');
   return data;
 };
 
@@ -390,7 +403,41 @@ const UpcomingSchedules = ({ schedules }) => {
   );
 };
 
-const ScheduleHistory = ({ history }) => {
+const ScheduleHistory = ({ history, userId }) => {
+  const [expandedSchedules, setExpandedSchedules] = useState({});
+  const [examResults, setExamResults] = useState({});
+  const [loadingResults, setLoadingResults] = useState({});
+  const navigate = useNavigate();
+
+  const toggleSchedule = (scheduleId) => {
+    setExpandedSchedules(prev => ({
+      ...prev,
+      [scheduleId]: !prev[scheduleId]
+    }));
+  };
+
+  const loadExamResult = async (examId, scheduleId) => {
+    if (examResults[examId]) return;
+    
+    setLoadingResults(prev => ({ ...prev, [examId]: true }));
+    try {
+      const result = await getExamResult(examId, userId);
+      setExamResults(prev => ({ ...prev, [examId]: result }));
+    } catch (err) {
+      console.error('Error loading exam result:', err);
+      setExamResults(prev => ({ ...prev, [examId]: null }));
+    } finally {
+      setLoadingResults(prev => ({ ...prev, [examId]: false }));
+    }
+  };
+
+  const handleViewResult = (examId, scheduleId) => {
+    toggleSchedule(scheduleId);
+    if (!examResults[examId] && !loadingResults[examId]) {
+      loadExamResult(examId, scheduleId);
+    }
+  };
+
   if (!history || history.length === 0) {
     return (
       <div className="bg-gray-800 rounded-lg p-6 text-center">
@@ -406,8 +453,15 @@ const ScheduleHistory = ({ history }) => {
           <div className="flex items-center gap-2 mb-3 text-xs text-gray-500">
             <Calendar size={12} className="flex-shrink-0" />
             {new Date(item.created_at).toLocaleDateString('bn-BD')}
+            {item.complete && (
+              <span className="ml-auto flex items-center gap-1 text-green-400 bg-green-900/30 px-2 py-1 rounded">
+                <CheckCircle size={12} />
+                সম্পন্ন
+              </span>
+            )}
           </div>
 
+          {/* Class Section */}
           {item.has_class && item.class && (
             <div className="mb-3">
               <div className="flex items-center gap-2 mb-2">
@@ -422,8 +476,9 @@ const ScheduleHistory = ({ history }) => {
             </div>
           )}
 
+          {/* Exam Section */}
           {item.has_exam && item.exam && (
-            <div className="bg-gray-900 rounded p-2 sm:p-3">
+            <div className="bg-gray-900 rounded p-2 sm:p-3 mb-3">
               <div className="flex items-center gap-2 mb-2">
                 <BookOpen className="text-yellow-400 flex-shrink-0" size={16} />
                 <span className="text-white font-medium text-sm sm:text-base break-words">{item.exam.exam_topic_name}</span>
@@ -432,6 +487,104 @@ const ScheduleHistory = ({ history }) => {
                 <p className="break-words">বিষয়: {item.exam.exam_subject}</p>
                 <p>ধরণ: {item.exam.exam_type}</p>
                 <p>MCQ: {item.exam.mcq_count} | মার্কস: {item.exam.total_marks}</p>
+              </div>
+              
+              {/* View Result Button */}
+              <button
+                onClick={() => handleViewResult(item.exam.exam_id, item.schedule_id)}
+                className="mt-2 w-full flex items-center justify-center gap-2 bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-2 rounded-lg transition-colors text-xs sm:text-sm"
+              >
+                <Eye size={14} />
+                {expandedSchedules[item.schedule_id] ? 'ফলাফল লুকান' : 'ফলাফল দেখুন'}
+              </button>
+
+              {/* Exam Result Display */}
+              {expandedSchedules[item.schedule_id] && (
+                <div className="mt-3 p-3 bg-gray-800 rounded-lg">
+                  {loadingResults[item.exam.exam_id] ? (
+                    <div className="text-center py-4">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-400 mx-auto mb-2"></div>
+                      <p className="text-gray-400 text-xs">ফলাফল লোড হচ্ছে...</p>
+                    </div>
+                  ) : examResults[item.exam.exam_id] === null ? (
+                    <div className="text-center py-4">
+                      <AlertCircle className="mx-auto mb-2 text-red-400" size={32} />
+                      <p className="text-red-400 text-xs">ফলাফল পাওয়া যায়নি</p>
+                    </div>
+                  ) : examResults[item.exam.exam_id] ? (
+                    <div className="space-y-3">
+                      {/* Result Summary */}
+                      <div className="grid grid-cols-2 gap-2">
+                        <div className="bg-green-900/30 border border-green-600/30 rounded p-2 text-center">
+                          <div className="text-lg font-bold text-green-400">{examResults[item.exam.exam_id].correctAnswers}</div>
+                          <div className="text-xs text-green-400">সঠিক উত্তর</div>
+                        </div>
+                        <div className="bg-red-900/30 border border-red-600/30 rounded p-2 text-center">
+                          <div className="text-lg font-bold text-red-400">{examResults[item.exam.exam_id].wrongAnswers}</div>
+                          <div className="text-xs text-red-400">ভুল উত্তর</div>
+                        </div>
+                        <div className="bg-blue-900/30 border border-blue-600/30 rounded p-2 text-center">
+                          <div className="text-lg font-bold text-blue-400">{examResults[item.exam.exam_id].totalMarks}</div>
+                          <div className="text-xs text-blue-400">প্রাপ্ত নম্বর</div>
+                        </div>
+                        <div className="bg-purple-900/30 border border-purple-600/30 rounded p-2 text-center">
+                          <div className="text-lg font-bold text-purple-400">{examResults[item.exam.exam_id].totalQuestions}</div>
+                          <div className="text-xs text-purple-400">মোট প্রশ্ন</div>
+                        </div>
+                      </div>
+
+                      {/* Submitted Time */}
+                      {examResults[item.exam.exam_id].submittedAt && (
+                        <div className="text-xs text-gray-400 text-center">
+                          জমা দেওয়া হয়েছে: {new Date(examResults[item.exam.exam_id].submittedAt).toLocaleString('bn-BD')}
+                        </div>
+                      )}
+
+                      {/* Auto Submit Info */}
+                      {examResults[item.exam.exam_id].isAutoSubmitted && (
+                        <div className="text-xs text-orange-400 text-center bg-orange-900/20 p-2 rounded">
+                          স্বয়ংক্রিয়ভাবে জমা হয়েছে
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <p className="text-gray-400 text-xs text-center">ফলাফল লোড করতে উপরের বাটনে ক্লিক করুন</p>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Lecture Files Section with Email Parameter */}
+          {item.complete && item.lecture_files && item.lecture_files.length > 0 && (
+            <div className="bg-blue-900/20 border border-blue-600/30 rounded-lg p-3">
+              <div className="flex items-center gap-2 mb-3">
+                <FileText className="text-blue-400 flex-shrink-0" size={16} />
+                <span className="text-blue-400 font-medium text-sm">লেকচার ফাইল ({item.lecture_files.length})</span>
+              </div>
+              <div className="space-y-2">
+                {item.lecture_files.map((file, idx) => (
+                  <div key={idx} className="bg-gray-900 rounded p-2 flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2 min-w-0 flex-1">
+                      <FileText className="text-gray-400 flex-shrink-0" size={14} />
+                      <span className="text-white text-xs truncate">{file.lecture_name || 'Lecture PDF'}</span>
+                    </div>
+                  <button
+                    onClick={() => {
+                      navigate('/pdf-viewer', { 
+                        state: { 
+                          fileId: file.uid, 
+                          email: generateUserEmail(userId) 
+                        } 
+                      });
+                    }}
+                    className="flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-xs transition-colors flex-shrink-0"
+                  >
+                    <Eye size={12} />
+                    দেখুন
+                  </button>
+                  </div>
+                ))}
               </div>
             </div>
           )}
@@ -679,10 +832,23 @@ export default function BatchSchedulePage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showSidebar, setShowSidebar] = useState(false);
+   const [userId, setUserId] = useState(null);
 
   useEffect(() => {
     loadBatches();
   }, []);
+
+    useEffect(() => {
+    // Get user ID from localStorage or JWT token
+    const token = localStorage.getItem('token');
+    if (token) {
+      // Decode JWT to get user ID (you may need to install jwt-decode)
+      // Or get it from your auth context
+      const storedUserId = localStorage.getItem('userId'); // Adjust based on your auth implementation
+      setUserId(storedUserId);
+    }
+  }, []);
+
 
   useEffect(() => {
     if (selectedBatch) {
@@ -906,7 +1072,7 @@ export default function BatchSchedulePage() {
                     {activeTab === 'today' && <TodayScheduleCard schedule={todaySchedule} />}
                     {activeTab === 'upcoming' && <UpcomingSchedules schedules={upcomingSchedules} />}
                     {activeTab === 'attendance' && <AttendanceCalendar batchId={selectedBatch?.batch_id} />}
-                    {activeTab === 'history' && <ScheduleHistory history={scheduleHistory} />}
+                     {activeTab === 'history' && <ScheduleHistory history={scheduleHistory} userId={userId} />}
                   </>
                 )}
               </>

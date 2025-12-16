@@ -24,6 +24,7 @@ import './App.css';
 import AboutUsPage from './pages/AboutUsPage';
 import BatchSchedulePage from './pages/BatchSchedulePage';
 import MedicrackCourseViewer from './pages/MedicrackCourseViewer';
+import SecurePDFViewer from './pages/SecurePDFViewe';
 
 // KaTeX CSS এখন public/index.html থেকে লোড করা হবে, তাই এখানে আর ইম্পোর্ট করার প্রয়োজন নেই।
 // import 'katex/dist/katex.min.css';
@@ -286,6 +287,8 @@ function App() {
           <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
 
           <Route path="/medicrack/admission-form" element={<AdmissionForm />} />
+
+          <Route path="/pdf-viewer" element={<SecurePDFViewer />} />
 
           {/* কোনো ম্যাচ না হলে '/' রুটে রিডাইরেক্ট করবে */}
           <Route path="*" element={<Navigate to="/" replace />} />
