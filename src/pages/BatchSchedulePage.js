@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Calendar, Clock, Video, Users, BookOpen, AlertCircle, ChevronRight, ExternalLink, Timer, Menu, X, ChevronDown, CheckCircle, FileText, Eye, Download } from 'lucide-react';
+import {PlayCircle, Calendar, Clock, Video, Users, BookOpen, AlertCircle, ChevronRight, ExternalLink, Timer, Menu, X, ChevronDown, CheckCircle, FileText, Eye, Download } from 'lucide-react';
 // API Base URL
 const API_BASE_URL = 'https://medicrack-web-exam-496984660515.asia-south1.run.app/api';
 const PDF_VIEW_BASE_URL = 'https://medicrack-pdf-upload-view-496984660515.asia-south1.run.app/api/pdf-view';
@@ -403,7 +403,7 @@ const UpcomingSchedules = ({ schedules }) => {
   );
 };
 
-const ScheduleHistory = ({ history, userId }) => {
+const ScheduleHistory = ({ history, userId, batchId }) => {
   const [expandedSchedules, setExpandedSchedules] = useState({});
   const [examResults, setExamResults] = useState({});
   const [loadingResults, setLoadingResults] = useState({});
@@ -458,7 +458,18 @@ const ScheduleHistory = ({ history, userId }) => {
                 <CheckCircle size={12} />
                 সম্পন্ন
               </span>
+
+              
             )}
+
+                      {/* View Class Button */}
+          <button
+            onClick={() => navigate(`/batches/${batchId}/modules`)}
+            className="mt-3 w-full flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 sm:py-3 rounded-lg transition-colors text-sm sm:text-base"
+          >
+            <PlayCircle size={16} />
+            ক্লাস দেখুন
+          </button>
           </div>
 
           {/* Class Section */}
@@ -1072,7 +1083,7 @@ export default function BatchSchedulePage() {
                     {activeTab === 'today' && <TodayScheduleCard schedule={todaySchedule} />}
                     {activeTab === 'upcoming' && <UpcomingSchedules schedules={upcomingSchedules} />}
                     {activeTab === 'attendance' && <AttendanceCalendar batchId={selectedBatch?.batch_id} />}
-                     {activeTab === 'history' && <ScheduleHistory history={scheduleHistory} userId={userId} />}
+                     {activeTab === 'history' && <ScheduleHistory history={scheduleHistory} userId={userId} batchId={selectedBatch?.batch_id}/>}
                   </>
                 )}
               </>
