@@ -141,7 +141,7 @@ export default function GMOLecture() {
                 <p><strong>উদাহরণ:</strong> T4 DNA Ligase</p>
               </div>
               <div className="bg-white bg-opacity-20 p-4 rounded-lg mt-4">
-                <p className="font-bold mb-2">🎯 কীভাবে জোড়া লাগায়?</p>
+                <p className="font-bold mb-2">কীভাবে জোড়া লাগায়?</p>
                 <p className="text-sm">DNA এর sugar-phosphate backbone এর মধ্যে phosphodiester bond তৈরি করে দুটি টুকরো জুড়ে দেয়।</p>
               </div>
             </div>
@@ -301,7 +301,7 @@ export default function GMOLecture() {
 
         {/* Comparison Table */}
         <h2 className="text-3xl font-bold text-red-400 border-l-4 border-red-500 pl-4 mb-6">
-          📊 দুটি Enzyme এর তুলনা
+          দুটি Enzyme এর তুলনা
         </h2>
         
         <div className="overflow-x-auto mb-8">
@@ -366,7 +366,7 @@ export default function GMOLecture() {
 
         {/* Key Points */}
         <h2 className="text-3xl font-bold text-red-400 border-l-4 border-red-500 pl-4 mb-6">
-          🎯 লেকচারের জন্য Key Points
+          লেকচারের জন্য Key Points
         </h2>
         
         <div className="bg-green-900 border-l-4 border-green-400 p-6 rounded mb-8">
