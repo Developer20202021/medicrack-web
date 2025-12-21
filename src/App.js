@@ -23,6 +23,7 @@ import BatchSchedulePage from './pages/BatchSchedulePage';
 import MedicrackCourseViewer from './pages/MedicrackCourseViewer';
 import SecurePDFViewer from './pages/SecurePDFViewe';
 import BatchModuleViewer from './pages/BatchModuleViewer';
+import GMOLecture from './SlideClass/GMOLecture';
 
 
 const FACEBOOK_PIXEL_ID = '1221381706690641';
@@ -246,6 +247,7 @@ function App() {
           />
 
           <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+          <Route path="/gmo-lecture" element={<GMOLecture />} />
           <Route path="/medicrack/admission-form" element={<AdmissionForm />} />
           <Route path="/pdf-viewer" element={<SecurePDFViewer />} />
 
