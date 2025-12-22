@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, GraduationCap } from 'lucide-react';
 
 const Header = ({ isAuthenticated, onLogout }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [userId, setUserId] = useState('');
-  const location = useLocation();
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   // localStorage থেকে userId লোড করুন
   useEffect(() => {
@@ -15,13 +15,36 @@ const Header = ({ isAuthenticated, onLogout }) => {
     }
   }, [isAuthenticated]);
 
+  // Scroll handling
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY < lastScrollY) {
+        // উপরে scroll করছে
+        setIsVisible(true);
+      } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        // নিচে scroll করছে এবং 100px এর বেশি scroll হয়েছে
+        setIsVisible(false);
+      }
+
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [lastScrollY]);
+
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
   // Active link check করার function
   const isActive = (path) => {
-    return location.pathname === path;
+    return window.location.pathname === path;
   };
 
   // Link এর className generate করার function
@@ -43,59 +66,63 @@ const Header = ({ isAuthenticated, onLogout }) => {
   };
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 backdrop-blur-md bg-opacity-95 text-white shadow-2xl border-b border-slate-700/50 font-['Inter']">
+    <header 
+      className={`fixed top-0 left-0 w-full z-50 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 backdrop-blur-md bg-opacity-95 text-white shadow-2xl border-b border-slate-700/50 font-['Inter'] transition-transform duration-300 ${
+        isVisible ? 'translate-y-0' : '-translate-y-full'
+      }`}
+    >
       <div className="container mx-auto flex justify-between items-center px-4 md:px-8 py-4">
         {/* Logo Section */}
-        <Link to="/home" className="flex items-center space-x-3 group flex-shrink-0">
+        <a href="/home" className="flex items-center space-x-3 group flex-shrink-0">
           <div className="bg-gradient-to-br from-emerald-500 to-teal-600 p-2 rounded-lg shadow-lg group-hover:shadow-emerald-500/50 transition-all duration-300">
             <GraduationCap className="w-6 h-6 text-white" />
           </div>
           <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">
             মেডিক্র্যাক
           </h1>
-        </Link>
+        </a>
 
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center space-x-1">
-          <Link to="/home" className={getLinkClassName('/home')}>
+          <a href="/home" className={getLinkClassName('/home')}>
             Home
-          </Link>
-          <Link to="/exams" className={getLinkClassName('/exams')}>
+          </a>
+          <a href="/exams" className={getLinkClassName('/exams')}>
             Exam
-          </Link>
-          <Link to="/batches" className={getLinkClassName('/batches')}>
+          </a>
+          <a href="/batches" className={getLinkClassName('/batches')}>
             Batches
-          </Link>
-          <Link to="/qbanks" className={getLinkClassName('/qbanks')}>
+          </a>
+          <a href="/qbanks" className={getLinkClassName('/qbanks')}>
             QBank
-          </Link>
+          </a>
           {/* Free Course Link - শুধুমাত্র লগইন থাকলে এবং userId থাকলে */}
           {isAuthenticated && userId && (
-            <Link 
-              to={`/freecourse/medicrack/${userId}`} 
+            <a 
+              href={`/freecourse/medicrack/${userId}`} 
               className={getLinkClassName(`/freecourse/medicrack/${userId}`)}
             >
               Free Course
-            </Link>
+            </a>
           )}
-          <Link to="/blog" className={getLinkClassName('/blog')}>
+          <a href="/blog" className={getLinkClassName('/blog')}>
             Blog
-          </Link>
-          <Link to="/faq" className={getLinkClassName('/faq')}>
+          </a>
+          <a href="/faq" className={getLinkClassName('/faq')}>
             FAQ
-          </Link>
-          <Link to="/about-us" className={getLinkClassName('/about-us')}>
+          </a>
+          <a href="/about-us" className={getLinkClassName('/about-us')}>
             About
-          </Link>
-          <Link to="/contact" className={getLinkClassName('/contact')}>
+          </a>
+          <a href="/contact" className={getLinkClassName('/contact')}>
             Contact
-          </Link>
-          <Link to="/privacy-policy" className={getLinkClassName('/privacy-policy')}>
+          </a>
+          <a href="/privacy-policy" className={getLinkClassName('/privacy-policy')}>
             Privacy Policy
-          </Link>
-          <Link to="/medicrack/admission-form" className={getLinkClassName('/medicrack/admission-form')}>
+          </a>
+          <a href="/medicrack/admission-form" className={getLinkClassName('/medicrack/admission-form')}>
             Admission
-          </Link>
+          </a>
         </nav>
 
         {/* Right Section - Auth Button & Mobile Toggle */}
@@ -108,12 +135,12 @@ const Header = ({ isAuthenticated, onLogout }) => {
               লগআউট
             </button>
           ) : (
-            <Link 
-              to="/" 
+            <a 
+              href="/" 
               className="hidden md:block bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white font-semibold py-2 px-6 rounded-lg shadow-lg hover:shadow-blue-500/50 transition-all duration-300 transform hover:scale-105 text-sm"
             >
               লগইন
-            </Link>
+            </a>
           )}
 
           {/* Mobile Menu Toggle */}
@@ -132,106 +159,106 @@ const Header = ({ isAuthenticated, onLogout }) => {
         <nav className="lg:hidden bg-slate-900/95 backdrop-blur-lg border-t border-slate-700/50">
           <ul className="flex flex-col py-4 px-4 space-y-2">
             <li>
-              <Link 
-                to="/home" 
+              <a 
+                href="/home" 
                 className={getMobileLinkClassName('/home')}
                 onClick={toggleMobileMenu}
               >
                 Home
-              </Link>
+              </a>
             </li>
             <li>
-              <Link 
-                to="/exams" 
+              <a 
+                href="/exams" 
                 className={getMobileLinkClassName('/exams')}
                 onClick={toggleMobileMenu}
               >
                 Exam
-              </Link>
+              </a>
             </li>
             <li>
-              <Link 
-                to="/batches" 
+              <a 
+                href="/batches" 
                 className={getMobileLinkClassName('/batches')}
                 onClick={toggleMobileMenu}
               >
                 Batches
-              </Link>
+              </a>
             </li>
             <li>
-              <Link 
-                to="/qbanks" 
+              <a 
+                href="/qbanks" 
                 className={getMobileLinkClassName('/qbanks')}
                 onClick={toggleMobileMenu}
               >
                 QBank
-              </Link>
+              </a>
             </li>
             {/* Mobile Free Course Link */}
             {isAuthenticated && userId && (
               <li>
-                <Link 
-                  to={`/freecourse/medicrack/${userId}`} 
+                <a 
+                  href={`/freecourse/medicrack/${userId}`} 
                   className={getMobileLinkClassName(`/freecourse/medicrack/${userId}`)}
                   onClick={toggleMobileMenu}
                 >
                   Free Course
-                </Link>
+                </a>
               </li>
             )}
             <li>
-              <Link 
-                to="/blog" 
+              <a 
+                href="/blog" 
                 className={getMobileLinkClassName('/blog')}
                 onClick={toggleMobileMenu}
               >
                 Blog
-              </Link>
+              </a>
             </li>
             <li>
-              <Link 
-                to="/faq" 
+              <a 
+                href="/faq" 
                 className={getMobileLinkClassName('/faq')}
                 onClick={toggleMobileMenu}
               >
                 FAQ
-              </Link>
+              </a>
             </li>
             <li>
-              <Link 
-                to="/about-us" 
+              <a 
+                href="/about-us" 
                 className={getMobileLinkClassName('/about-us')}
                 onClick={toggleMobileMenu}
               >
                 About
-              </Link>
+              </a>
             </li>
             <li>
-              <Link 
-                to="/contact" 
+              <a 
+                href="/contact" 
                 className={getMobileLinkClassName('/contact')}
                 onClick={toggleMobileMenu}
               >
                 Contact
-              </Link>
+              </a>
             </li>
             <li>
-              <Link 
-                to="/privacy-policy" 
+              <a 
+                href="/privacy-policy" 
                 className={getMobileLinkClassName('/privacy-policy')}
                 onClick={toggleMobileMenu}
               >
                 Privacy Policy
-              </Link>
+              </a>
             </li>
             <li>
-              <Link 
-                to="/medicrack/admission-form" 
+              <a 
+                href="/medicrack/admission-form" 
                 className={getMobileLinkClassName('/medicrack/admission-form')}
                 onClick={toggleMobileMenu}
               >
                 Admission
-              </Link>
+              </a>
             </li>
             
             {/* Mobile Auth Button */}
@@ -249,13 +276,13 @@ const Header = ({ isAuthenticated, onLogout }) => {
               </li>
             ) : (
               <li className="pt-2">
-                <Link 
-                  to="/" 
+                <a 
+                  href="/" 
                   className="block w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white font-semibold py-3 px-4 rounded-lg shadow-lg transition-all duration-300 text-center"
                   onClick={toggleMobileMenu}
                 >
                   লগইন
-                </Link>
+                </a>
               </li>
             )}
           </ul>

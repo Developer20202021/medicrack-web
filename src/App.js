@@ -24,7 +24,7 @@ import MedicrackCourseViewer from './pages/MedicrackCourseViewer';
 import SecurePDFViewer from './pages/SecurePDFViewe';
 import BatchModuleViewer from './pages/BatchModuleViewer';
 import GMOLecture from './SlideClass/GMOLecture';
-
+import DocumentationViewerPage from './Documentation/DocumentationViewerPage';
 
 const FACEBOOK_PIXEL_ID = '1221381706690641';
 const API_BASE_URL = 'https://medicrack-web-exam-496984660515.asia-south1.run.app/api';
@@ -233,6 +233,10 @@ function App() {
             path="/batches" 
             element={isAuthenticated ? <BatchSchedulePage /> : <Navigate to="/" replace />} 
           />
+          <Route 
+          path="/documentation/:docId" 
+          element={<DocumentationViewerPage />} 
+        />
           <Route
             path="/result/:examId/:userId"
             element={isAuthenticated ? <ResultPage /> : <Navigate to="/" replace />}

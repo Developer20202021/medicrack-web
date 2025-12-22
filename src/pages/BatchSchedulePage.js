@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {PlayCircle, Calendar, Clock, Video, Users, BookOpen, AlertCircle, ChevronRight, ExternalLink, Timer, Menu, X, ChevronDown, CheckCircle, FileText, Eye, Download } from 'lucide-react';
+import DocumentationViewer from '../Documentation/DocumentationViewer';
+import { PlayCircle, Calendar, Clock, Video, Users, BookOpen, AlertCircle, ChevronRight, ExternalLink, Timer, Menu, X, ChevronDown, CheckCircle, FileText, Eye, Download } from 'lucide-react';
 // API Base URL
 const API_BASE_URL = 'https://medicrack-web-exam-496984660515.asia-south1.run.app/api';
 const PDF_VIEW_BASE_URL = 'https://medicrack-pdf-upload-view-496984660515.asia-south1.run.app/api/pdf-view';
@@ -29,12 +30,12 @@ const parseDateTime = (dateStr, timeStr) => {
 
 const formatCountdown = (ms) => {
   if (ms <= 0) return 'শুরু হয়েছে';
-  
+
   const totalSeconds = Math.floor(ms / 1000);
   const hours = Math.floor(totalSeconds / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
   const seconds = totalSeconds % 60;
-  
+
   if (hours > 0) {
     return `${hours} ঘণ্টা ${minutes} মিনিট বাকি`;
   } else if (minutes > 0) {
@@ -62,7 +63,7 @@ const getMyBatches = async () => {
 const getTodaySchedule = async (batchId, date = null) => {
   const body = { batch_id: batchId };
   if (date) body.date = date;
-  
+
   const response = await fetch(`${API_BASE_URL}/batch/today-schedule`, {
     method: 'POST',
     headers: {
@@ -118,7 +119,7 @@ const getExamResult = async (examId, userId) => {
 const getMonthlyAttendance = async (batchId, month = null) => {
   const body = { batch_id: batchId };
   if (month) body.month = month;
-  
+
   const response = await fetch(`${API_BASE_URL}/attendance/monthly-calendar`, {
     method: 'POST',
     headers: {
@@ -150,11 +151,10 @@ const getAvailableMonths = async (batchId) => {
 const BatchCard = ({ batch, onSelect, isSelected }) => (
   <div
     onClick={() => onSelect(batch)}
-    className={`p-3 sm:p-4 rounded-lg cursor-pointer transition-all border ${
-      isSelected
-        ? 'bg-blue-600 border-blue-500'
-        : 'bg-gray-800 border-gray-700 hover:bg-gray-750 hover:border-gray-600'
-    }`}
+    className={`p-3 sm:p-4 rounded-lg cursor-pointer transition-all border ${isSelected
+      ? 'bg-blue-600 border-blue-500'
+      : 'bg-gray-800 border-gray-700 hover:bg-gray-750 hover:border-gray-600'
+      }`}
   >
     <div className="flex items-start justify-between">
       <div className="flex-1 min-w-0">
@@ -195,7 +195,7 @@ const TodayScheduleCard = ({ schedule }) => {
     const updateCountdown = () => {
       const now = new Date();
       const today = now.toISOString().split('T')[0];
-      
+
       if (schedule.schedule.has_class && schedule.schedule.class_time) {
         const classTime = parseDateTime(today, schedule.schedule.class_time);
         if (classTime) {
@@ -332,11 +332,10 @@ const TodayScheduleCard = ({ schedule }) => {
               <button
                 onClick={() => isExamStarted && navigate(`/exam/${data.exam.exam_id}`)}
                 disabled={!isExamStarted}
-                className={`mt-3 w-full flex items-center justify-center gap-2 px-4 py-2 sm:py-3 rounded-lg transition-colors text-sm sm:text-base ${
-                  isExamStarted
-                    ? 'bg-yellow-600 hover:bg-yellow-700 text-white cursor-pointer'
-                    : 'bg-gray-400 text-gray-200 cursor-not-allowed'
-                }`}
+                className={`mt-3 w-full flex items-center justify-center gap-2 px-4 py-2 sm:py-3 rounded-lg transition-colors text-sm sm:text-base ${isExamStarted
+                  ? 'bg-yellow-600 hover:bg-yellow-700 text-white cursor-pointer'
+                  : 'bg-gray-400 text-gray-200 cursor-not-allowed'
+                  }`}
               >
                 <BookOpen size={16} />
                 {isExamStarted ? 'পরীক্ষা শুরু করুন' : 'পরীক্ষা এখনও শুরু হয়নি'}
@@ -370,9 +369,8 @@ const UpcomingSchedules = ({ schedules }) => {
                 ) : (
                   <BookOpen className="text-yellow-400 flex-shrink-0" size={18} />
                 )}
-                <span className={`text-xs px-2 py-1 rounded ${
-                  item.type === 'class' ? 'bg-blue-900/30 text-blue-400' : 'bg-yellow-900/30 text-yellow-400'
-                }`}>
+                <span className={`text-xs px-2 py-1 rounded ${item.type === 'class' ? 'bg-blue-900/30 text-blue-400' : 'bg-yellow-900/30 text-yellow-400'
+                  }`}>
                   {item.type === 'class' ? 'ক্লাস' : 'পরীক্ষা'}
                 </span>
               </div>
@@ -418,7 +416,7 @@ const ScheduleHistory = ({ history, userId, batchId }) => {
 
   const loadExamResult = async (examId, scheduleId) => {
     if (examResults[examId]) return;
-    
+
     setLoadingResults(prev => ({ ...prev, [examId]: true }));
     try {
       const result = await getExamResult(examId, userId);
@@ -459,17 +457,17 @@ const ScheduleHistory = ({ history, userId, batchId }) => {
                 সম্পন্ন
               </span>
 
-              
+
             )}
 
-                      {/* View Class Button */}
-          <button
-            onClick={() => navigate(`/batches/${batchId}/modules`)}
-            className="mt-3 w-full flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 sm:py-3 rounded-lg transition-colors text-sm sm:text-base"
-          >
-            <PlayCircle size={16} />
-            ক্লাস দেখুন
-          </button>
+            {/* View Class Button */}
+            <button
+              onClick={() => navigate(`/batches/${batchId}/modules`)}
+              className="mt-3 w-full flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 sm:py-3 rounded-lg transition-colors text-sm sm:text-base"
+            >
+              <PlayCircle size={16} />
+              ক্লাস দেখুন
+            </button>
           </div>
 
           {/* Class Section */}
@@ -499,7 +497,7 @@ const ScheduleHistory = ({ history, userId, batchId }) => {
                 <p>ধরণ: {item.exam.exam_type}</p>
                 <p>MCQ: {item.exam.mcq_count} | মার্কস: {item.exam.total_marks}</p>
               </div>
-              
+
               {/* View Result Button */}
               <button
                 onClick={() => handleViewResult(item.exam.exam_id, item.schedule_id)}
@@ -580,20 +578,20 @@ const ScheduleHistory = ({ history, userId, batchId }) => {
                       <FileText className="text-gray-400 flex-shrink-0" size={14} />
                       <span className="text-white text-xs truncate">{file.lecture_name || 'Lecture PDF'}</span>
                     </div>
-                  <button
-                    onClick={() => {
-                      navigate('/pdf-viewer', { 
-                        state: { 
-                          fileId: file.uid, 
-                          email: generateUserEmail(userId) 
-                        } 
-                      });
-                    }}
-                    className="flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-xs transition-colors flex-shrink-0"
-                  >
-                    <Eye size={12} />
-                    দেখুন
-                  </button>
+                    <button
+                      onClick={() => {
+                        navigate('/pdf-viewer', {
+                          state: {
+                            fileId: file.uid,
+                            email: generateUserEmail(userId)
+                          }
+                        });
+                      }}
+                      className="flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-xs transition-colors flex-shrink-0"
+                    >
+                      <Eye size={12} />
+                      দেখুন
+                    </button>
                   </div>
                 ))}
               </div>
@@ -639,11 +637,10 @@ const MobileBatchSelector = ({ batches, selectedBatch, onSelect }) => {
                   onSelect(batch);
                   setIsOpen(false);
                 }}
-                className={`p-4 cursor-pointer transition-colors border-b border-gray-700 last:border-b-0 ${
-                  selectedBatch?.batch_id === batch.batch_id
-                    ? 'bg-blue-600'
-                    : 'hover:bg-gray-750'
-                }`}
+                className={`p-4 cursor-pointer transition-colors border-b border-gray-700 last:border-b-0 ${selectedBatch?.batch_id === batch.batch_id
+                  ? 'bg-blue-600'
+                  : 'hover:bg-gray-750'
+                  }`}
               >
                 <h3 className="text-white font-semibold mb-1 text-sm">{batch.batch_name}</h3>
                 {batch.batch_code && (
@@ -843,13 +840,13 @@ export default function BatchSchedulePage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showSidebar, setShowSidebar] = useState(false);
-   const [userId, setUserId] = useState(null);
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
     loadBatches();
   }, []);
 
-    useEffect(() => {
+  useEffect(() => {
     // Get user ID from localStorage or JWT token
     const token = localStorage.getItem('token');
     if (token) {
@@ -873,11 +870,11 @@ export default function BatchSchedulePage() {
     setError(null);
     try {
       const data = await getMyBatches();
-      
+
       console.log('API Response:', data);
       console.log('Batches:', data.batches);
       console.log('Total Batches:', data.total_batches);
-      
+
       setBatches(data.batches || []);
       if (data.batches && data.batches.length > 0) {
         setSelectedBatch(data.batches[0]);
@@ -1028,47 +1025,53 @@ export default function BatchSchedulePage() {
                   />
                 </div>
 
-{/* Tabs */}
+                {/* Tabs */}
                 <div className="flex gap-1 sm:gap-2 mb-4 sm:mb-6 bg-gray-800 p-1 rounded-lg overflow-x-auto">
                   <button
                     onClick={() => setActiveTab('today')}
-                    className={`flex-1 whitespace-nowrap py-2 px-3 sm:px-4 rounded-lg transition-colors text-sm sm:text-base ${
-                      activeTab === 'today'
-                        ? 'bg-blue-600 text-white'
-                        : 'text-gray-400 hover:text-white'
-                    }`}
+                    className={`flex-1 whitespace-nowrap py-2 px-3 sm:px-4 rounded-lg transition-colors text-sm sm:text-base ${activeTab === 'today'
+                      ? 'bg-blue-600 text-white'
+                      : 'text-gray-400 hover:text-white'
+                      }`}
                   >
                     আজকের শিডিউল
                   </button>
                   <button
-                onClick={() => setActiveTab('attendance')}
-                className={`flex-1 whitespace-nowrap py-2 px-3 sm:px-4 rounded-lg transition-colors text-sm sm:text-base ${
-                  activeTab === 'attendance'
-                    ? 'bg-blue-600 text-white'
-                    : 'text-gray-400 hover:text-white'
-                }`}
-              >
-                উপস্থিতি
-              </button>
+                    onClick={() => setActiveTab('attendance')}
+                    className={`flex-1 whitespace-nowrap py-2 px-3 sm:px-4 rounded-lg transition-colors text-sm sm:text-base ${activeTab === 'attendance'
+                      ? 'bg-blue-600 text-white'
+                      : 'text-gray-400 hover:text-white'
+                      }`}
+                  >
+                    উপস্থিতি
+                  </button>
                   <button
                     onClick={() => setActiveTab('upcoming')}
-                    className={`flex-1 whitespace-nowrap py-2 px-3 sm:px-4 rounded-lg transition-colors text-sm sm:text-base ${
-                      activeTab === 'upcoming'
-                        ? 'bg-blue-600 text-white'
-                        : 'text-gray-400 hover:text-white'
-                    }`}
+                    className={`flex-1 whitespace-nowrap py-2 px-3 sm:px-4 rounded-lg transition-colors text-sm sm:text-base ${activeTab === 'upcoming'
+                      ? 'bg-blue-600 text-white'
+                      : 'text-gray-400 hover:text-white'
+                      }`}
                   >
                     আসন্ন
                   </button>
                   <button
                     onClick={() => setActiveTab('history')}
-                    className={`flex-1 whitespace-nowrap py-2 px-3 sm:px-4 rounded-lg transition-colors text-sm sm:text-base ${
-                      activeTab === 'history'
-                        ? 'bg-blue-600 text-white'
-                        : 'text-gray-400 hover:text-white'
-                    }`}
+                    className={`flex-1 whitespace-nowrap py-2 px-3 sm:px-4 rounded-lg transition-colors text-sm sm:text-base ${activeTab === 'history'
+                      ? 'bg-blue-600 text-white'
+                      : 'text-gray-400 hover:text-white'
+                      }`}
                   >
                     ইতিহাস
+                  </button>
+
+                  <button
+                    onClick={() => setActiveTab('documentation')}
+                    className={`flex-1 whitespace-nowrap py-2 px-3 sm:px-4 rounded-lg transition-colors text-sm sm:text-base ${activeTab === 'documentation'
+                      ? 'bg-blue-600 text-white'
+                      : 'text-gray-400 hover:text-white'
+                      }`}
+                  >
+                    ডকুমেন্টেশন
                   </button>
                 </div>
 
@@ -1083,7 +1086,8 @@ export default function BatchSchedulePage() {
                     {activeTab === 'today' && <TodayScheduleCard schedule={todaySchedule} />}
                     {activeTab === 'upcoming' && <UpcomingSchedules schedules={upcomingSchedules} />}
                     {activeTab === 'attendance' && <AttendanceCalendar batchId={selectedBatch?.batch_id} />}
-                     {activeTab === 'history' && <ScheduleHistory history={scheduleHistory} userId={userId} batchId={selectedBatch?.batch_id}/>}
+                    {activeTab === 'history' && <ScheduleHistory history={scheduleHistory} userId={userId} batchId={selectedBatch?.batch_id} />}
+                    {activeTab === 'documentation' && <DocumentationViewer batchId={selectedBatch?.batch_id} />}
                   </>
                 )}
               </>
