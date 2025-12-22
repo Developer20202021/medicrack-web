@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DocumentationViewer from '../Documentation/DocumentationViewer';
+import ProblemShareStudent from '../pages/ProblemShareStudent';
 import { PlayCircle, Calendar, Clock, Video, Users, BookOpen, AlertCircle, ChevronRight, ExternalLink, Timer, Menu, X, ChevronDown, CheckCircle, FileText, Eye, Download } from 'lucide-react';
 // API Base URL
 const API_BASE_URL = 'https://medicrack-web-exam-496984660515.asia-south1.run.app/api';
@@ -841,6 +842,7 @@ export default function BatchSchedulePage() {
   const [error, setError] = useState(null);
   const [showSidebar, setShowSidebar] = useState(false);
   const [userId, setUserId] = useState(null);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   useEffect(() => {
     loadBatches();
@@ -1026,53 +1028,161 @@ export default function BatchSchedulePage() {
                 </div>
 
                 {/* Tabs */}
-                <div className="flex gap-1 sm:gap-2 mb-4 sm:mb-6 bg-gray-800 p-1 rounded-lg overflow-x-auto">
-                  <button
-                    onClick={() => setActiveTab('today')}
-                    className={`flex-1 whitespace-nowrap py-2 px-3 sm:px-4 rounded-lg transition-colors text-sm sm:text-base ${activeTab === 'today'
-                      ? 'bg-blue-600 text-white'
-                      : 'text-gray-400 hover:text-white'
-                      }`}
-                  >
-                    আজকের শিডিউল
-                  </button>
-                  <button
-                    onClick={() => setActiveTab('attendance')}
-                    className={`flex-1 whitespace-nowrap py-2 px-3 sm:px-4 rounded-lg transition-colors text-sm sm:text-base ${activeTab === 'attendance'
-                      ? 'bg-blue-600 text-white'
-                      : 'text-gray-400 hover:text-white'
-                      }`}
-                  >
-                    উপস্থিতি
-                  </button>
-                  <button
-                    onClick={() => setActiveTab('upcoming')}
-                    className={`flex-1 whitespace-nowrap py-2 px-3 sm:px-4 rounded-lg transition-colors text-sm sm:text-base ${activeTab === 'upcoming'
-                      ? 'bg-blue-600 text-white'
-                      : 'text-gray-400 hover:text-white'
-                      }`}
-                  >
-                    আসন্ন
-                  </button>
-                  <button
-                    onClick={() => setActiveTab('history')}
-                    className={`flex-1 whitespace-nowrap py-2 px-3 sm:px-4 rounded-lg transition-colors text-sm sm:text-base ${activeTab === 'history'
-                      ? 'bg-blue-600 text-white'
-                      : 'text-gray-400 hover:text-white'
-                      }`}
-                  >
-                    ইতিহাস
-                  </button>
+                <div className="mb-4 sm:mb-6">
+                  {/* Desktop View - Show all tabs */}
+                  <div className="hidden sm:flex gap-2 bg-gray-800 p-1 rounded-lg">
+                    <button
+                      onClick={() => setActiveTab('today')}
+                      className={`flex-1 whitespace-nowrap py-2 px-4 rounded-lg transition-colors ${activeTab === 'today'
+                        ? 'bg-blue-600 text-white'
+                        : 'text-gray-400 hover:text-white'
+                        }`}
+                    >
+                      আজকের শিডিউল
+                    </button>
+                    <button
+                      onClick={() => setActiveTab('attendance')}
+                      className={`flex-1 whitespace-nowrap py-2 px-4 rounded-lg transition-colors ${activeTab === 'attendance'
+                        ? 'bg-blue-600 text-white'
+                        : 'text-gray-400 hover:text-white'
+                        }`}
+                    >
+                      উপস্থিতি
+                    </button>
+                    <button
+                      onClick={() => setActiveTab('upcoming')}
+                      className={`flex-1 whitespace-nowrap py-2 px-4 rounded-lg transition-colors ${activeTab === 'upcoming'
+                        ? 'bg-blue-600 text-white'
+                        : 'text-gray-400 hover:text-white'
+                        }`}
+                    >
+                      আসন্ন
+                    </button>
+                    <button
+                      onClick={() => setActiveTab('history')}
+                      className={`flex-1 whitespace-nowrap py-2 px-4 rounded-lg transition-colors ${activeTab === 'history'
+                        ? 'bg-blue-600 text-white'
+                        : 'text-gray-400 hover:text-white'
+                        }`}
+                    >
+                      ইতিহাস
+                    </button>
+                    <button
+                      onClick={() => setActiveTab('documentation')}
+                      className={`flex-1 whitespace-nowrap py-2 px-4 rounded-lg transition-colors ${activeTab === 'documentation'
+                        ? 'bg-blue-600 text-white'
+                        : 'text-gray-400 hover:text-white'
+                        }`}
+                    >
+                      ডকুমেন্টেশন
+                    </button>
+                    <button
+                      onClick={() => setActiveTab('problem-share')}
+                      className={`flex-1 whitespace-nowrap py-2 px-4 rounded-lg transition-colors ${activeTab === 'problem-share'
+                        ? 'bg-blue-600 text-white'
+                        : 'text-gray-400 hover:text-white'
+                        }`}
+                    >
+                      Problem Share
+                    </button>
+                  </div>
 
-                  <button
-                    onClick={() => setActiveTab('documentation')}
-                    className={`flex-1 whitespace-nowrap py-2 px-3 sm:px-4 rounded-lg transition-colors text-sm sm:text-base ${activeTab === 'documentation'
-                      ? 'bg-blue-600 text-white'
-                      : 'text-gray-400 hover:text-white'
-                      }`}
-                  >
-                    ডকুমেন্টেশন
-                  </button>
+                  {/* Mobile View - Show dropdown with three dots */}
+                  <div className="sm:hidden relative">
+                    <button
+                      onClick={() => setShowMobileMenu(!showMobileMenu)}
+                      className="w-full bg-gray-800 p-3 rounded-lg flex items-center justify-between text-white"
+                    >
+                      <span className="text-sm">
+                        {activeTab === 'today' && 'আজকের শিডিউল'}
+                        {activeTab === 'attendance' && 'উপস্থিতি'}
+                        {activeTab === 'upcoming' && 'আসন্ন'}
+                        {activeTab === 'history' && 'ইতিহাস'}
+                        {activeTab === 'documentation' && 'ডকুমেন্টেশন'}
+                        {activeTab === 'problem-share' && 'Problem Share'}
+                      </span>
+                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
+                      </svg>
+                    </button>
+
+                    {showMobileMenu && (
+                      <div className="absolute top-full left-0 right-0 mt-1 bg-gray-800 rounded-lg shadow-lg z-10 overflow-hidden">
+                        <button
+                          onClick={() => {
+                            setActiveTab('today');
+                            setShowMobileMenu(false);
+                          }}
+                          className={`w-full text-left py-3 px-4 text-sm transition-colors ${activeTab === 'today'
+                            ? 'bg-blue-600 text-white'
+                            : 'text-gray-400 hover:bg-gray-700 hover:text-white'
+                            }`}
+                        >
+                          আজকের শিডিউল
+                        </button>
+                        <button
+                          onClick={() => {
+                            setActiveTab('attendance');
+                            setShowMobileMenu(false);
+                          }}
+                          className={`w-full text-left py-3 px-4 text-sm transition-colors ${activeTab === 'attendance'
+                            ? 'bg-blue-600 text-white'
+                            : 'text-gray-400 hover:bg-gray-700 hover:text-white'
+                            }`}
+                        >
+                          উপস্থিতি
+                        </button>
+                        <button
+                          onClick={() => {
+                            setActiveTab('upcoming');
+                            setShowMobileMenu(false);
+                          }}
+                          className={`w-full text-left py-3 px-4 text-sm transition-colors ${activeTab === 'upcoming'
+                            ? 'bg-blue-600 text-white'
+                            : 'text-gray-400 hover:bg-gray-700 hover:text-white'
+                            }`}
+                        >
+                          আসন্ন
+                        </button>
+                        <button
+                          onClick={() => {
+                            setActiveTab('history');
+                            setShowMobileMenu(false);
+                          }}
+                          className={`w-full text-left py-3 px-4 text-sm transition-colors ${activeTab === 'history'
+                            ? 'bg-blue-600 text-white'
+                            : 'text-gray-400 hover:bg-gray-700 hover:text-white'
+                            }`}
+                        >
+                          ইতিহাস
+                        </button>
+                        <button
+                          onClick={() => {
+                            setActiveTab('documentation');
+                            setShowMobileMenu(false);
+                          }}
+                          className={`w-full text-left py-3 px-4 text-sm transition-colors ${activeTab === 'documentation'
+                            ? 'bg-blue-600 text-white'
+                            : 'text-gray-400 hover:bg-gray-700 hover:text-white'
+                            }`}
+                        >
+                          ডকুমেন্টেশন
+                        </button>
+                        <button
+                          onClick={() => {
+                            setActiveTab('problem-share');
+                            setShowMobileMenu(false);
+                          }}
+                          className={`w-full text-left py-3 px-4 text-sm transition-colors ${activeTab === 'problem-share'
+                            ? 'bg-blue-600 text-white'
+                            : 'text-gray-400 hover:bg-gray-700 hover:text-white'
+                            }`}
+                        >
+                          Problem Share
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 {/* Tab Content */}
@@ -1088,6 +1198,9 @@ export default function BatchSchedulePage() {
                     {activeTab === 'attendance' && <AttendanceCalendar batchId={selectedBatch?.batch_id} />}
                     {activeTab === 'history' && <ScheduleHistory history={scheduleHistory} userId={userId} batchId={selectedBatch?.batch_id} />}
                     {activeTab === 'documentation' && <DocumentationViewer batchId={selectedBatch?.batch_id} />}
+                    {activeTab === 'problem-share' && (
+                      <ProblemShareStudent batchId={selectedBatch?.batch_id} />
+                    )}
                   </>
                 )}
               </>
