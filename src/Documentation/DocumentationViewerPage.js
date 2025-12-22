@@ -129,6 +129,16 @@ const DocumentationViewerPage = () => {
     
     const FlaskConical = (props) => React.createElement('svg', {...props, xmlns: "http://www.w3.org/2000/svg", width: "24", height: "24", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('path', {d: "M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2"}), React.createElement('path', {d: "M8.5 2h7"}), React.createElement('path', {d: "M7 16h10"}));
 
+    const ChevronRight = (props) => React.createElement('svg', {...props, xmlns: "http://www.w3.org/2000/svg", width: "24", height: "24", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('path', {d: "m9 18 6-6-6-6"}));
+    
+    const ChevronDown = (props) => React.createElement('svg', {...props, xmlns: "http://www.w3.org/2000/svg", width: "24", height: "24", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('path', {d: "m6 9 6 6 6-6"}));
+    
+    const Droplet = (props) => React.createElement('svg', {...props, xmlns: "http://www.w3.org/2000/svg", width: "24", height: "24", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('path', {d: "M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"}));
+    
+    const Move = (props) => React.createElement('svg', {...props, xmlns: "http://www.w3.org/2000/svg", width: "24", height: "24", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('polyline', {points: "5 9 2 12 5 15"}), React.createElement('polyline', {points: "9 5 12 2 15 5"}), React.createElement('polyline', {points: "15 19 12 22 9 19"}), React.createElement('polyline', {points: "19 9 22 12 19 15"}), React.createElement('line', {x1: "2", x2: "22", y1: "12", y2: "12"}), React.createElement('line', {x1: "12", x2: "12", y1: "2", y2: "22"}));
+    
+    const Baby = (props) => React.createElement('svg', {...props, xmlns: "http://www.w3.org/2000/svg", width: "24", height: "24", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('path', {d: "M9 12h.01"}), React.createElement('path', {d: "M15 12h.01"}), React.createElement('path', {d: "M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"}), React.createElement('path', {d: "M19 6.3a9 9 0 0 1 1.8 3.9 2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 12 3c2 0 3.5 1.1 3.5 2.5s-.9 2.5-2 2.5c-.8 0-1.5-.4-1.5-1"}));
+    
     // User এর code
     ${doc.code.replace(/import\s+.*?from\s+['"].*?['"]\s*;?\s*/g, '').replace(/export\s+default\s+/g, '')}
     
