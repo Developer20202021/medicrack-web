@@ -231,7 +231,7 @@ function App() {
           />
           <Route 
             path="/batches" 
-            element={isAuthenticated ? <BatchSchedulePage /> : <Navigate to="/" replace />} 
+            element={isAuthenticated ? <BatchSchedulePage /> : <BatchSchedulePage />} 
           />
           <Route 
           path="/documentation/:docId" 
