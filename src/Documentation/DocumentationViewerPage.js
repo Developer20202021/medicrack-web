@@ -145,12 +145,26 @@ const DocumentationViewerPage = () => {
     const Info = (props) => React.createElement('svg', {...props, xmlns: "http://www.w3.org/2000/svg", width: "24", height: "24", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('circle', {cx: "12", cy: "12", r: "10"}), React.createElement('path', {d: "M12 16v-4"}), React.createElement('path', {d: "M12 8h.01"}));
 
     const Award = (props) => React.createElement('svg', {...props, xmlns: "http://www.w3.org/2000/svg", width: "24", height: "24", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('circle', {cx: "12", cy: "8", r: "6"}), React.createElement('path', {d: "M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"}));
+    
+    const Eye = (props) => React.createElement('svg', {...props, xmlns: "http://www.w3.org/2000/svg", width: "24", height: "24", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('path', {d: "M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"}), React.createElement('circle', {cx: "12", cy: "12", r: "3"}));
+
+const Antenna = (props) => React.createElement('svg', {...props, xmlns: "http://www.w3.org/2000/svg", width: "24", height: "24", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('path', {d: "M2 12 7 2"}), React.createElement('path', {d: "m7 12 5-10"}), React.createElement('path', {d: "m12 12 5-10"}), React.createElement('path', {d: "m17 12 5-10"}), React.createElement('path', {d: "M4.5 7h15"}), React.createElement('path', {d: "M12 16v6"}));
+
+const Bug = (props) => React.createElement('svg', {...props, xmlns: "http://www.w3.org/2000/svg", width: "24", height: "24", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('path', {d: "m8 2 1.88 1.88"}), React.createElement('path', {d: "M14.12 3.88 16 2"}), React.createElement('path', {d: "M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"}), React.createElement('path', {d: "M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"}), React.createElement('path', {d: "M12 20v-9"}), React.createElement('path', {d: "M6.53 9C4.6 8.8 3 7.1 3 5"}), React.createElement('path', {d: "M6 13H2"}), React.createElement('path', {d: "M3 21c0-2.1 1.7-3.9 3.8-4"}), React.createElement('path', {d: "M20.97 5c0 2.1-1.6 3.8-3.5 4"}), React.createElement('path', {d: "M22 13h-4"}), React.createElement('path', {d: "M17.2 17c2.1.1 3.8 1.9 3.8 4"}));
+
+const Brain = (props) => React.createElement('svg', {...props, xmlns: "http://www.w3.org/2000/svg", width: "24", height: "24", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('path', {d: "M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"}), React.createElement('path', {d: "M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"}), React.createElement('path', {d: "M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"}), React.createElement('path', {d: "M17.599 6.5a3 3 0 0 0 .399-1.375"}), React.createElement('path', {d: "M6.003 5.125A3 3 0 0 0 6.401 6.5"}), React.createElement('path', {d: "M3.477 10.896a4 4 0 0 1 .585-.396"}), React.createElement('path', {d: "M19.938 10.5a4 4 0 0 1 .585.396"}), React.createElement('path', {d: "M6 18a4 4 0 0 1-1.967-.516"}), React.createElement('path', {d: "M19.967 17.484A4 4 0 0 1 18 18"}));
+
+const Microscope = (props) => React.createElement('svg', {...props, xmlns: "http://www.w3.org/2000/svg", width: "24", height: "24", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('path', {d: "M6 18h8"}), React.createElement('path', {d: "M3 22h18"}), React.createElement('path', {d: "M14 22a7 7 0 1 0 0-14h-1"}), React.createElement('path', {d: "M9 14h2"}), React.createElement('path', {d: "M9 12a2 2 0 0 1-2-2V6h6v4a2 2 0 0 1-2 2Z"}), React.createElement('path', {d: "M12 6V3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3"}));
+    const X = (props) => React.createElement('svg', {...props, xmlns: "http://www.w3.org/2000/svg", width: "24", height: "24", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('path', {d: "M18 6 6 18"}), React.createElement('path', {d: "m6 6 12 12"}));
+
+const ZoomIn = (props) => React.createElement('svg', {...props, xmlns: "http://www.w3.org/2000/svg", width: "24", height: "24", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('circle', {cx: "11", cy: "11", r: "8"}), React.createElement('path', {d: "m21 21-4.3-4.3"}), React.createElement('path', {d: "M11 8v6"}), React.createElement('path', {d: "M8 11h6"}));
     // User এর code
+
     ${doc.code.replace(/import\s+.*?from\s+['"].*?['"]\s*;?\s*/g, '').replace(/export\s+default\s+/g, '')}
     
     // Component টি খুঁজে render করি
     const componentNames = ${JSON.stringify(
-      doc.code.match(/(?:const|let|var|function)\s+([A-Z][a-zA-Z0-9_]*)/g)?.map(m => 
+      doc.code.match(/(?:const|let|var|function)\s+([A-Z][a-zA-Z0-9_]*)/g)?.map(m =>
         m.replace(/(?:const|let|var|function)\s+/, '').trim()
       ) || []
     )};
@@ -216,17 +230,17 @@ const DocumentationViewerPage = () => {
       >
         {isFullscreen ? (
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M8 3v3a2 2 0 0 1-2 2H3"/>
-            <path d="M21 8h-3a2 2 0 0 1-2-2V3"/>
-            <path d="M3 16h3a2 2 0 0 1 2 2v3"/>
-            <path d="M16 21v-3a2 2 0 0 1 2-2h3"/>
+            <path d="M8 3v3a2 2 0 0 1-2 2H3" />
+            <path d="M21 8h-3a2 2 0 0 1-2-2V3" />
+            <path d="M3 16h3a2 2 0 0 1 2 2v3" />
+            <path d="M16 21v-3a2 2 0 0 1 2-2h3" />
           </svg>
         ) : (
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M8 3H5a2 2 0 0 0-2 2v3"/>
-            <path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
-            <path d="M3 16v3a2 2 0 0 0 2 2h3"/>
-            <path d="M16 21h3a2 2 0 0 0 2-2v-3"/>
+            <path d="M8 3H5a2 2 0 0 0-2 2v3" />
+            <path d="M21 8V5a2 2 0 0 0-2-2h-3" />
+            <path d="M3 16v3a2 2 0 0 0 2 2h3" />
+            <path d="M16 21h3a2 2 0 0 0 2-2v-3" />
           </svg>
         )}
       </button>
