@@ -11,6 +11,12 @@ const Footer = () => {
           <p className="text-gray-400 text-sm">
             বাংলাদেশের সকল ছাত্রছাত্রীর জন্য সাশ্রয়ী মূল্যে মানসম্মত মেডিকেল ভর্তি প্রস্তুতি প্রদান।
           </p>
+          <p className="text-gray-500 text-xs mt-4">
+            Trade License No.: 202638147190007​55
+          </p>
+          <p className="text-gray-500 text-xs">
+            Komorgram, Baniapara, Sadar, Joypurhat, Bangladesh
+          </p>
         </div>
 
         {/* Quick Links */}
@@ -34,7 +40,7 @@ const Footer = () => {
           </div>
           <div className="flex items-center text-gray-400 mb-4">
             <Phone size={18} className="mr-2 text-emerald-400" />
-            <span>+8801961766621</span> {/* Placeholder Phone Number */}
+            <span>+8801767298388</span> {/* Placeholder Phone Number */}
           </div>
 
           <h3 className="text-xl font-semibold mb-4 mt-6">আমাদের সাথে যুক্ত থাকুন</h3>
@@ -56,7 +62,7 @@ const Footer = () => {
 
       {/* Copyright */}
       <div className="border-t border-gray-700 mt-10 pt-8 text-center text-gray-500 text-sm">
-        &copy; {new Date().getFullYear()} মেডিক্র্যাক। সর্বস্বত্ব সংরক্ষিত।
+        &copy; {new Date().getFullYear()} মেডিক্র্যাক। সর্বস্বত্ব সংরক্ষিত। | Trade License: 202638147190007​55
       </div>
     </footer>
   );

@@ -13,7 +13,7 @@ const SuccessPopup = ({ message, onClose }) => {
         </div>
         <h2 className="text-3xl font-bold text-emerald-400 mb-4 text-center">সফল!</h2>
         <p className="text-gray-300 text-center text-lg mb-8 leading-relaxed">{message}</p>
-        <button 
+        <button
           onClick={onClose}
           className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-semibold py-3 px-6 rounded-lg shadow-lg hover:shadow-emerald-500/50 transition-all duration-300 transform hover:scale-105"
         >
@@ -80,7 +80,7 @@ function ContactPage() {
       <div className="max-w-5xl w-full">
         {/* Main Container */}
         <div className="bg-slate-800/50 backdrop-blur-xl rounded-3xl shadow-2xl border border-slate-700/50 overflow-hidden">
-          
+
           {/* Header Section */}
           <div className="bg-gradient-to-r from-emerald-600 to-teal-600 p-8 md:p-12 text-center">
             <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 rounded-full mb-4">
@@ -98,14 +98,14 @@ function ContactPage() {
           {/* Content Section */}
           <div className="p-6 md:p-10 lg:p-12">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-              
+
               {/* Contact Form */}
               <div>
                 <h2 className="text-2xl font-bold text-white mb-6 flex items-center">
                   <Send className="w-6 h-6 text-emerald-400 mr-3" />
                   মেসেজ পাঠান
                 </h2>
-                
+
                 <form onSubmit={handleSubmit} className="space-y-5">
                   {/* Name Field */}
                   <div className="space-y-2">
@@ -185,7 +185,7 @@ function ContactPage() {
                   </div>
 
                   {/* Submit Button */}
-                  <button 
+                  <button
                     type="submit"
                     disabled={status === 'loading'}
                     className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-semibold py-3 px-6 rounded-lg shadow-lg hover:shadow-emerald-500/50 transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center space-x-2"
@@ -221,7 +221,7 @@ function ContactPage() {
                   <Phone className="w-6 h-6 text-emerald-400 mr-3" />
                   অন্যান্য যোগাযোগের তথ্য
                 </h2>
-                
+
                 <div className="space-y-6">
                   {/* Email Card */}
                   <div className="bg-slate-700/30 border border-slate-600/50 rounded-xl p-6 hover:border-emerald-500/50 transition-all duration-300 group">
@@ -231,7 +231,7 @@ function ContactPage() {
                       </div>
                       <div className="flex-1">
                         <h3 className="text-white font-semibold mb-2">ইমেইল</h3>
-                        <a 
+                        <a
                           href="mailto:medicrack.official@gmail.com"
                           className="text-emerald-400 hover:text-emerald-300 transition-colors duration-200 break-all"
                         >
@@ -249,8 +249,8 @@ function ContactPage() {
                       </div>
                       <div className="flex-1">
                         <h3 className="text-white font-semibold mb-2">ফোন</h3>
-                        <a 
-                          href="tel:+8801961766621"
+                        <a
+                          href="tel:+8801767298388"
                           className="text-emerald-400 hover:text-emerald-300 transition-colors duration-200"
                         >
                           +880 1961 766621
@@ -275,7 +275,7 @@ function ContactPage() {
                   {/* Info Box */}
                   <div className="bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border border-emerald-500/30 rounded-xl p-6 mt-8">
                     <p className="text-gray-300 text-sm leading-relaxed">
-                      আমরা সাধারণত <span className="text-emerald-400 font-semibold">২৪ ঘন্টার মধ্যে</span> আপনার মেসেজের উত্তর দিয়ে থাকি। 
+                      আমরা সাধারণত <span className="text-emerald-400 font-semibold">২৪ ঘন্টার মধ্যে</span> আপনার মেসেজের উত্তর দিয়ে থাকি।
                       জরুরি বিষয়ের জন্য সরাসরি ফোন করুন।
                     </p>
                   </div>

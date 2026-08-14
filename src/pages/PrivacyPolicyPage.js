@@ -92,11 +92,10 @@ const PrivacyPolicyPage = () => {
                         e.preventDefault();
                         scrollToSection(item.id);
                       }}
-                      className={`block py-3 px-4 rounded-lg font-semibold transition-all duration-300 ${
-                        activeSection === item.id
+                      className={`block py-3 px-4 rounded-lg font-semibold transition-all duration-300 ${activeSection === item.id
                           ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg transform translate-x-1'
                           : 'text-gray-300 hover:bg-slate-700/50 hover:text-white'
-                      }`}
+                        }`}
                     >
                       {item.label}
                     </a>
@@ -143,15 +142,13 @@ const PrivacyPolicyPage = () => {
                       ক. ব্যক্তিগতভাবে শনাক্তকরণযোগ্য তথ্য (PII)
                     </span>
                     <ChevronDown
-                      className={`w-6 h-6 text-emerald-400 transform transition-transform duration-300 ${
-                        openAccordion === 0 ? 'rotate-180' : ''
-                      }`}
+                      className={`w-6 h-6 text-emerald-400 transform transition-transform duration-300 ${openAccordion === 0 ? 'rotate-180' : ''
+                        }`}
                     />
                   </button>
                   <div
-                    className={`transition-all duration-500 ease-in-out ${
-                      openAccordion === 0 ? 'max-h-[1000px]' : 'max-h-0'
-                    } overflow-hidden`}
+                    className={`transition-all duration-500 ease-in-out ${openAccordion === 0 ? 'max-h-[1000px]' : 'max-h-0'
+                      } overflow-hidden`}
                   >
                     <div className="p-5 border-t border-slate-700/50">
                       <p className="mb-4 text-gray-300">
@@ -186,15 +183,13 @@ const PrivacyPolicyPage = () => {
                   >
                     <span className="font-semibold text-lg text-white">খ. ব্যবহার ও ডিভাইস তথ্য</span>
                     <ChevronDown
-                      className={`w-6 h-6 text-emerald-400 transform transition-transform duration-300 ${
-                        openAccordion === 1 ? 'rotate-180' : ''
-                      }`}
+                      className={`w-6 h-6 text-emerald-400 transform transition-transform duration-300 ${openAccordion === 1 ? 'rotate-180' : ''
+                        }`}
                     />
                   </button>
                   <div
-                    className={`transition-all duration-500 ease-in-out ${
-                      openAccordion === 1 ? 'max-h-[1000px]' : 'max-h-0'
-                    } overflow-hidden`}
+                    className={`transition-all duration-500 ease-in-out ${openAccordion === 1 ? 'max-h-[1000px]' : 'max-h-0'
+                      } overflow-hidden`}
                   >
                     <div className="p-5 border-t border-slate-700/50">
                       <p className="mb-4 text-gray-300">
@@ -305,7 +300,7 @@ const PrivacyPolicyPage = () => {
                   <Phone className="w-6 h-6 text-emerald-400" />
                   <div>
                     <strong className="text-white block">ফোন:</strong>
-                    <span className="text-gray-300">+8801961766621</span>
+                    <span className="text-gray-300">+8801767298388</span>
                   </div>
                 </div>
               </div>
